@@ -1,0 +1,21 @@
+<div class="take-exam-container fade-in">
+  <div class="exam-header">
+    <h1>Take Exam</h1>
+    <p>Exam ID: {{ examId }}</p>
+  </div>
+
+  <mat-card class="exam-content">
+    <mat-card-content>
+      <p>Exam content will be displayed here...</p>
+      
+      <div class="exam-actions">
+        <button mat-raised-button color="primary" (click)="submitExam()">
+          Submit Exam
+        </button>
+        <button mat-button routerLink="/student/exams">
+          Cancel
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

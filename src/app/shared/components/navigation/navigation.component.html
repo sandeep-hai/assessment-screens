@@ -1,0 +1,74 @@
+<mat-toolbar class="nav-header" color="primary">
+  <button 
+    mat-icon-button 
+    class="menu-button"
+    (click)="toggleMenu()"
+    aria-label="Toggle menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <span class="app-title">Assessment Tool</span>
+  
+  <span class="spacer"></span>
+  
+  <div class="user-info" *ngIf="currentUser">
+    <mat-chip class="role-chip">{{ getRoleDisplayName() }}</mat-chip>
+    <span class="user-name hide-mobile">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+    
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    
+    <mat-menu #userMenu="matMenu">
+      <div class="user-menu-header">
+        <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
+        <small>{{ currentUser.email }}</small>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav 
+    #sidenav 
+    mode="over"
+    [opened]="isMenuOpen"
+    (closed)="isMenuOpen = false"
+    class="sidenav">
+    
+    <div class="sidenav-header">
+      <h3>Navigation</h3>
+    </div>
+    
+    <mat-nav-list>
+      <a 
+        mat-list-item 
+        *ngFor="let item of getMenuItems()" 
+        [routerLink]="item.route"
+        routerLinkActive="nav-item active"
+        class="nav-item"
+        (click)="isMenuOpen = false">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  
+  <mat-sidenav-content class="main-content">
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

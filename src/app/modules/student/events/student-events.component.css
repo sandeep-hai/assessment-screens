@@ -1,0 +1,108 @@
+.events-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.events-header h1 {
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.create-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.events-tabs {
+  margin-bottom: 24px;
+}
+
+.events-tabs ::ng-deep .mat-tab-body-content {
+  padding-top: 24px;
+}
+
+.events-grid {
+  gap: 24px;
+}
+
+.event-card {
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+}
+
+.event-card mat-card-title {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.event-details {
+  margin: 16px 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.detail-item mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--primary-color);
+}
+
+.no-events {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+}
+
+.no-events-icon {
+  font-size: 72px;
+  width: 72px;
+  height: 72px;
+  color: var(--border-color);
+  margin-bottom: 16px;
+}
+
+.no-events h3 {
+  color: var(--text-primary);
+  margin: 16px 0 8px 0;
+}
+
+.no-events p {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .events-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-btn span {
+    display: none;
+  }
+}

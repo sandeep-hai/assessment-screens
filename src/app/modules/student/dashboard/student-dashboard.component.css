@@ -1,0 +1,212 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.welcome-text {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.stats-grid {
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 24px;
+  cursor: pointer;
+}
+
+.stat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.content-grid {
+  margin-bottom: 32px;
+  gap: 24px;
+}
+
+.content-card {
+  padding: 0;
+}
+
+.content-card mat-card-header {
+  background-color: #f5f5f5;
+  padding: 16px;
+}
+
+.content-card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
+}
+
+.content-card mat-card-content {
+  padding: 16px;
+}
+
+.events-list, .polls-list {
+  margin-bottom: 16px;
+}
+
+.event-item, .poll-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.event-item:last-child, .poll-item:last-child {
+  border-bottom: none;
+}
+
+.event-info h4, .poll-item h4 {
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+}
+
+.event-date {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 4px 0 8px 0;
+}
+
+.poll-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.poll-stats span {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.exams-grid {
+  gap: 16px;
+}
+
+.exam-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.exam-info h4 {
+  margin: 0 0 8px 0;
+  color: var(--primary-color);
+}
+
+.exam-info p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.exam-details {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.exam-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.exam-details mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.exam-actions {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.card-actions {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Status and Type Chips */
+.status-virtual {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.status-physical {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.exam-type-practice {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.exam-type-test {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.exam-type-assignment {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.exam-type-final {
+  background-color: var(--error-color);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .exams-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .exam-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

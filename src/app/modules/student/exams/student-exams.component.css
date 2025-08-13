@@ -1,0 +1,82 @@
+.exams-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.exams-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.exams-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.exams-header p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.exams-grid {
+  gap: 24px;
+}
+
+.exam-card {
+  transition: transform 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-4px);
+}
+
+.exam-card mat-card-title {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.exam-details {
+  margin: 16px 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.detail-item mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--primary-color);
+}
+
+.exam-type-practice {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.exam-type-test {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.exam-type-assignment {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.exam-type-final {
+  background-color: var(--error-color);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .exams-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,25 @@
+.take-exam-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.exam-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.exam-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.exam-content {
+  padding: 24px;
+}
+
+.exam-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}

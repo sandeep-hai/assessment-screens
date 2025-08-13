@@ -1,0 +1,55 @@
+<div class="dashboard-container fade-in">
+  <div class="dashboard-header">
+    <h1>Lecturer Dashboard</h1>
+    <p class="welcome-text">Manage your courses and track student progress.</p>
+  </div>
+
+  <div class="stats-grid grid-container grid-cols-4">
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">quiz</mat-icon>
+      <h3>{{ dashboardStats.totalExams }}</h3>
+      <p>Total Exams</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">grading</mat-icon>
+      <h3>{{ dashboardStats.pendingEvaluations }}</h3>
+      <p>Pending Evaluations</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">school</mat-icon>
+      <h3>{{ dashboardStats.totalStudents }}</h3>
+      <p>Total Students</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">trending_up</mat-icon>
+      <h3>{{ dashboardStats.averageScore }}%</h3>
+      <p>Average Score</p>
+    </mat-card>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid grid-container grid-cols-3">
+      <mat-card class="action-card" routerLink="/lecturer/create-exam">
+        <mat-icon>add_circle</mat-icon>
+        <h3>Create Exam</h3>
+        <p>Generate AI-powered or custom exams</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/lecturer/evaluate">
+        <mat-icon>fact_check</mat-icon>
+        <h3>Evaluate Submissions</h3>
+        <p>Review and grade student work</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/lecturer/events">
+        <mat-icon>event</mat-icon>
+        <h3>Manage Events</h3>
+        <p>Create and organize educational events</p>
+      </mat-card>
+    </div>
+  </div>
+</div>

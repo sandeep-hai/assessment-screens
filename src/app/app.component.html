@@ -1,0 +1,7 @@
+<div class="app-container">
+  <app-navigation *ngIf="showNavigation">
+    <router-outlet></router-outlet>
+  </app-navigation>
+  
+  <router-outlet *ngIf="!showNavigation"></router-outlet>
+</div>

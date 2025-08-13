@@ -1,0 +1,41 @@
+.dialog-container {
+  min-width: 500px;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.virtual-toggle {
+  margin: 8px 0;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .dialog-container {
+    min-width: auto;
+  }
+  
+  .date-row {
+    grid-template-columns: 1fr;
+  }
+}

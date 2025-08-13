@@ -1,0 +1,73 @@
+<div class="dashboard-container fade-in">
+  <div class="dashboard-header">
+    <h1>College Admin Dashboard</h1>
+    <p class="welcome-text">Manage your institution and oversee operations.</p>
+  </div>
+
+  <div class="stats-grid grid-container grid-cols-4">
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">school</mat-icon>
+      <h3>{{ dashboardStats.totalStudents }}</h3>
+      <p>Total Students</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">people</mat-icon>
+      <h3>{{ dashboardStats.totalLecturers }}</h3>
+      <p>Total Lecturers</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">book</mat-icon>
+      <h3>{{ dashboardStats.activeSubjects }}</h3>
+      <p>Active Subjects</p>
+    </mat-card>
+
+    <mat-card class="stat-card dashboard-card">
+      <mat-icon class="stat-icon">pending_actions</mat-icon>
+      <h3>{{ dashboardStats.pendingApprovals }}</h3>
+      <p>Pending Approvals</p>
+    </mat-card>
+  </div>
+
+  <div class="admin-actions">
+    <h2>Administrative Actions</h2>
+    <div class="actions-grid grid-container grid-cols-3">
+      <mat-card class="action-card" routerLink="/college-admin/college">
+        <mat-icon>business</mat-icon>
+        <h3>Manage College</h3>
+        <p>Update college information and settings</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/college-admin/students">
+        <mat-icon>person_add</mat-icon>
+        <h3>Student Onboarding</h3>
+        <p>Register and manage student accounts</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/college-admin/lecturers">
+        <mat-icon>group_add</mat-icon>
+        <h3>Lecturer Onboarding</h3>
+        <p>Add and manage lecturer profiles</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/college-admin/subjects">
+        <mat-icon>subject</mat-icon>
+        <h3>Manage Subjects</h3>
+        <p>Create and organize course subjects</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/college-admin/reports">
+        <mat-icon>analytics</mat-icon>
+        <h3>View Reports</h3>
+        <p>Academic performance and analytics</p>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/college-admin/settings">
+        <mat-icon>settings</mat-icon>
+        <h3>System Settings</h3>
+        <p>Configure institution preferences</p>
+      </mat-card>
+    </div>
+  </div>
+</div>

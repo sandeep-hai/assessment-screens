@@ -1,0 +1,33 @@
+<div class="polls-container fade-in">
+  <div class="polls-header">
+    <h1>Active Polls</h1>
+    <p>Participate in polls and share your opinion</p>
+  </div>
+
+  <div class="polls-grid grid-container grid-cols-1" *ngIf="polls$ | async as polls">
+    <mat-card *ngFor="let poll of polls" class="poll-card card-elevated">
+      <mat-card-header>
+        <mat-card-title>{{ poll.question }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip class="status-active">Active</mat-chip>
+          <span class="vote-count">{{ poll.totalVotes }} votes</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="poll-options">
+          <button 
+            *ngFor="let option of poll.options" 
+            mat-stroked-button 
+            class="poll-option"
+            (click)="vote(poll, option)">
+            {{ option }}
+            <span class="vote-percentage">
+              {{ poll.votes[option] || 0 }} votes
+            </span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

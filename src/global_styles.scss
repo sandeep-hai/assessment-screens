@@ -1,0 +1,139 @@
+/* Import Angular Material theming functions */
+@use '@angular/material/theming' as mat;
+
+/* Include the common styles for Angular Material */
+@include mat.core();
+
+/* Define the palettes for your theme using the Material Design palettes */
+$primary: mat.define-palette(mat.$pink-palette, 700);
+$accent: mat.define-palette(mat.$green-palette, 500);
+$warn: mat.define-palette(mat.$red-palette);
+
+/* Create the theme object */
+$theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+/* Include theme styles for all components */
+@include mat.all-component-themes($theme);
+
+/* Global styles */
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  background-color: #fafafa;
+}
+
+/* CSS Custom Properties for consistent theming */
+:root {
+  --primary-color: #c2185b;
+  --primary-dark: #8e0038;
+  --accent-color: #4caf50;
+  --background-color: #fafafa;
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.54);
+  --border-color: #e0e0e0;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
+  --info-color: #2196f3;
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.full-width { width: 100%; }
+.mt-16 { margin-top: 16px; }
+.mb-16 { margin-bottom: 16px; }
+.p-16 { padding: 16px; }
+.spacer { flex: 1 1 auto; }
+
+/* Hide elements on mobile */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+
+/* Grid system */
+.grid-container {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-cols-1 { grid-template-columns: 1fr; }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Card styles */
+.dashboard-card {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card-elevated {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-elevated:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Status chips */
+.status-active {
+  background-color: var(--success-color) !important;
+  color: white !important;
+}
+
+.status-virtual {
+  background-color: var(--info-color) !important;
+  color: white !important;
+}
+
+.status-physical {
+  background-color: var(--success-color) !important;
+  color: white !important;
+}
+
+/* Exam type chips */
+.exam-type-practice {
+  background-color: var(--info-color) !important;
+  color: white !important;
+}
+
+.exam-type-test {
+  background-color: var(--warning-color) !important;
+  color: white !important;
+}
+
+.exam-type-assignment {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+.exam-type-final {
+  background-color: var(--error-color) !important;
+  color: white !important;
+}

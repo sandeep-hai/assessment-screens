@@ -1,0 +1,106 @@
+.nav-header {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.role-chip {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  font-size: 12px;
+}
+
+.sidenav-container {
+  margin-top: 64px;
+  height: calc(100vh - 64px);
+}
+
+.sidenav {
+  width: 280px;
+}
+
+.sidenav-header {
+  padding: 16px 24px;
+  background-color: var(--primary-color);
+  color: white;
+  margin-bottom: 16px;
+}
+
+.sidenav-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.nav-item {
+  transition: background-color 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: rgba(156, 34, 68, 0.08) !important;
+}
+
+.nav-item.active {
+  background-color: rgba(156, 34, 68, 0.12) !important;
+  border-right: 3px solid var(--primary-color);
+}
+
+.main-content {
+  padding: 24px;
+  background-color: var(--background-color);
+  min-height: calc(100vh - 64px);
+}
+
+.user-menu-header {
+  padding: 16px;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+.user-menu-header strong {
+  display: block;
+  color: var(--text-primary);
+}
+
+.user-menu-header small {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 100vw;
+  }
+  
+  .main-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 16px;
+    margin-left: 8px;
+  }
+  
+  .main-content {
+    padding: 8px;
+  }
+}

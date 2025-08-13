@@ -1,0 +1,93 @@
+<div class="events-container fade-in">
+  <div class="events-header">
+    <h1>Events</h1>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      class="create-btn"
+      (click)="openCreateEventDialog()">
+      <mat-icon>add</mat-icon>
+      Create Event
+    </button>
+  </div>
+
+  <mat-tab-group [(selectedIndex)]="selectedTab" class="events-tabs">
+    <mat-tab label="All Events">
+      <div class="events-grid grid-container grid-cols-2" *ngIf="events$ | async as events">
+        <mat-card 
+          *ngFor="let event of events" 
+          class="event-card card-elevated">
+          <mat-card-header>
+            <mat-card-title>{{ event.title }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-chip [color]="getEventTypeColor(event.type)">
+                {{ event.type | titlecase }}
+              </mat-chip>
+            </mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <p>{{ event.description }}</p>
+            
+            <div class="event-details">
+              <div class="detail-item">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ event.startDate | date:'medium' }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>access_time</mat-icon>
+                <span>{{ event.startDate | date:'shortTime' }} - {{ event.endDate | date:'shortTime' }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>{{ event.isVirtual ? 'videocam' : 'location_on' }}</mat-icon>
+                <span>{{ event.isVirtual ? 'Virtual Event' : event.location }}</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="event.maxAttendees">
+                <mat-icon>group</mat-icon>
+                <span>{{ event.attendees.length }}/{{ event.maxAttendees }} attendees</span>
+              </div>
+            </div>
+          </mat-card-content>
+          
+          <mat-card-actions>
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="joinEvent(event)">
+              Join Event
+            </button>
+            <button mat-button>
+              <mat-icon>share</mat-icon>
+              Share
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="My Events">
+      <div class="no-events" *ngIf="!(events$ | async)?.length">
+        <mat-icon class="no-events-icon">event_busy</mat-icon>
+        <h3>No events created yet</h3>
+        <p>Create your first event to get started.</p>
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="openCreateEventDialog()">
+          Create Event
+        </button>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Joined Events">
+      <div class="no-events">
+        <mat-icon class="no-events-icon">event_available</mat-icon>
+        <h3>No joined events</h3>
+        <p>Join events to see them here.</p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
