@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -36,8 +35,7 @@ export class OtpVerificationComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private route: ActivatedRoute
   ) {
     this.otpForm = this.fb.group({
       otp: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]]
@@ -59,12 +57,12 @@ export class OtpVerificationComponent implements OnInit {
       this.authService.verifyOTP(this.email, otp).subscribe({
         next: (response) => {
           this.isLoading = false;
-          this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
+          console.log('Login successful!');
           this.redirectBasedOnRole(response.user.role);
         },
         error: (error) => {
           this.isLoading = false;
-          this.snackBar.open('Invalid OTP. Please try again.', 'Close', { duration: 3000 });
+          console.log('Invalid OTP. Please try again.');
         }
       });
     }
@@ -74,11 +72,11 @@ export class OtpVerificationComponent implements OnInit {
     this.authService.sendOTP(this.email).subscribe({
       next: (success) => {
         if (success) {
-          this.snackBar.open('OTP resent successfully!', 'Close', { duration: 3000 });
+          console.log('OTP resent successfully!');
         }
       },
       error: (error) => {
-        this.snackBar.open('Error resending OTP', 'Close', { duration: 3000 });
+        console.log('Error resending OTP');
       }
     });
   }
