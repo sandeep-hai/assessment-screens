@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/services/auth.service';
+import { UserRole } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -75,16 +76,16 @@ export class LoginComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     if (user) {
       switch (user.role) {
-        case UserRole.STUDENT:
+        case 'student':
           this.router.navigate(['/student']);
           break;
-        case UserRole.LECTURER:
+        case 'lecturer':
           this.router.navigate(['/lecturer']);
           break;
-        case UserRole.COLLEGE_ADMIN:
+        case 'college_admin':
           this.router.navigate(['/college-admin']);
           break;
-        case UserRole.APP_ADMIN:
+        case 'app_admin':
           this.router.navigate(['/app-admin']);
           break;
         default:
