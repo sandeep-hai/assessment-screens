@@ -23,9 +23,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Check authentication status and redirect accordingly
-    this.checkAuthenticationAndRedirect();
-    
     // Watch for route changes to determine if navigation should be shown
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -35,19 +32,26 @@ export class AppComponent implements OnInit {
 
     // Check initial route
     this.showNavigation = this.shouldShowNavigation(this.router.url);
+    
+    // Check authentication status and redirect accordingly
+    this.checkAuthenticationAndRedirect();
   }
 
   private checkAuthenticationAndRedirect(): void {
     const currentUrl = this.router.url;
     const isAuthenticated = this.authService.isAuthenticated();
     
-    // If user is authenticated and on auth pages, redirect to dashboard
-    if (isAuthenticated && (currentUrl === '/' || currentUrl.startsWith('/auth'))) {
-      this.redirectToDashboard();
-    }
-    // If user is not authenticated and not on auth pages, redirect to login
-    else if (!isAuthenticated && !currentUrl.startsWith('/auth') && currentUrl !== '/unauthorized') {
-      this.router.navigate(['/auth/login']);
+    // Only redirect if not already on the correct page
+    if (isAuthenticated) {
+      // If authenticated and on auth pages or root, redirect to dashboard
+      if (currentUrl === '/' || currentUrl.startsWith('/auth')) {
+        this.redirectToDashboard();
+      }
+    } else {
+      // If not authenticated and not on auth pages, redirect to login
+      if (!currentUrl.startsWith('/auth') && currentUrl !== '/unauthorized') {
+        this.router.navigate(['/auth/login']);
+      }
     }
   }
 
