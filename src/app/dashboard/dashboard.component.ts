@@ -1,15 +1,30 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, MatChipsModule, MatDividerModule],
   template: `
-    <div style="padding: 24px; background-color: #fafafa; min-height: 100vh;">
+    <div style="background-color: #fafafa; min-height: 100vh;">
+      <!-- Header with logout -->
+      <div style="background: white; padding: 16px 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 24px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="color: #c2185b; margin: 0;">Assessment Tool</h2>
+          <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon style="margin-right: 8px;">logout</mat-icon>
+            Switch User
+          </button>
+        </div>
+      </div>
+
+      <div style="padding: 0 24px;">
       <div style="max-width: 1200px; margin: 0 auto;">
         <div style="margin-bottom: 32px; text-align: center;">
           <h1 style="color: #c2185b; margin-bottom: 8px;">Student Dashboard</h1>
@@ -56,8 +71,85 @@ import { MatButtonModule } from '@angular/material/button';
             </div>
           </div>
         </mat-card>
+
+        <!-- Feed Section -->
+        <mat-card style="padding: 24px; margin-bottom: 24px;">
+          <h2 style="color: #c2185b; margin-bottom: 24px; display: flex; align-items: center;">
+            <mat-icon style="margin-right: 8px;">dynamic_feed</mat-icon>
+            Activity Feed
+          </h2>
+          
+          <!-- Events Feed -->
+          <div *ngFor="let event of events" style="border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 16px; background: white;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #c2185b, #8e0038); display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                <mat-icon style="color: white; font-size: 20px;">event</mat-icon>
+              </div>
+              <div>
+                <h4 style="margin: 0; color: #333;">{{ event.title }}</h4>
+                <p style="margin: 0; color: #666; font-size: 14px;">{{ event.date }}</p>
+              </div>
+              <mat-chip style="margin-left: auto;" [style.background-color]="event.type === 'webinar' ? '#2196f3' : '#4caf50'" style="color: white;">
+                {{ event.type }}
+              </mat-chip>
+            </div>
+            <p style="color: #555; margin-bottom: 12px;">{{ event.description }}</p>
+            <div style="display: flex; align-items: center; gap: 16px; color: #666; font-size: 14px; margin-bottom: 12px;">
+              <span><mat-icon style="font-size: 16px; margin-right: 4px;">schedule</mat-icon>{{ event.time }}</span>
+              <span><mat-icon style="font-size: 16px; margin-right: 4px;">{{ event.isVirtual ? 'videocam' : 'location_on' }}</mat-icon>{{ event.location }}</span>
+            </div>
+            <mat-divider style="margin: 12px 0;"></mat-divider>
+            <div style="display: flex; gap: 12px;">
+              <button mat-raised-button color="primary" size="small">Join Event</button>
+              <button mat-button size="small">
+                <mat-icon style="margin-right: 4px;">share</mat-icon>Share
+              </button>
+              <button mat-button size="small">
+                <mat-icon style="margin-right: 4px;">bookmark</mat-icon>Save
+              </button>
+            </div>
+          </div>
+
+          <!-- Polls Feed -->
+          <div *ngFor="let poll of polls" style="border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 16px; background: white;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4caf50, #2e7d32); display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                <mat-icon style="color: white; font-size: 20px;">poll</mat-icon>
+              </div>
+              <div>
+                <h4 style="margin: 0; color: #333;">Poll</h4>
+                <p style="margin: 0; color: #666; font-size: 14px;">{{ poll.date }}</p>
+              </div>
+              <mat-chip style="margin-left: auto; background-color: #4caf50; color: white;">Active</mat-chip>
+            </div>
+            <h3 style="color: #333; margin-bottom: 16px;">{{ poll.question }}</h3>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+              <button 
+                *ngFor="let option of poll.options" 
+                mat-stroked-button 
+                style="justify-content: space-between; padding: 12px 16px;"
+                (click)="vote(poll, option)">
+                <span>{{ option }}</span>
+                <span style="color: #666; font-size: 12px;">{{ poll.votes[option] || 0 }} votes</span>
+              </button>
+            </div>
+            <p style="color: #666; font-size: 14px; margin-bottom: 12px;">{{ poll.totalVotes }} total votes</p>
+            <mat-divider style="margin: 12px 0;"></mat-divider>
+            <div style="display: flex; gap: 12px;">
+              <button mat-button size="small">
+                <mat-icon style="margin-right: 4px;">thumb_up</mat-icon>Like
+              </button>
+              <button mat-button size="small">
+                <mat-icon style="margin-right: 4px;">comment</mat-icon>Comment
+              </button>
+              <button mat-button size="small">
+                <mat-icon style="margin-right: 4px;">share</mat-icon>Share
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      </div>
       </div>
     </div>
   `
 })
-export class DashboardComponent {}
