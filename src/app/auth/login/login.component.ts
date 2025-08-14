@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,8 +33,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -58,15 +56,15 @@ export class LoginComponent implements OnInit {
         next: (success) => {
           this.isLoading = false;
           if (success) {
-            this.snackBar.open('OTP sent successfully!', 'Close', { duration: 3000 });
+            console.log('OTP sent successfully!');
             this.router.navigate(['/auth/verify-otp'], { queryParams: { email } });
           } else {
-            this.snackBar.open('User not found!', 'Close', { duration: 3000 });
+            console.log('User not found!');
           }
         },
         error: (error) => {
           this.isLoading = false;
-          this.snackBar.open('Error sending OTP', 'Close', { duration: 3000 });
+          console.log('Error sending OTP');
         }
       });
     }
