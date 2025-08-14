@@ -27,7 +27,10 @@ export const routes: Routes = [
   },
   {
     path: 'student',
-    loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule),
+    children: [
+      { path: 'dashboard', component: StudentDashboardComponent },
+      { path: '', loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule) }
+    ],
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.STUDENT] }
   },
@@ -39,7 +42,10 @@ export const routes: Routes = [
   },
   {
     path: 'lecturer',
-    loadChildren: () => import('./modules/lecturer/lecturer.module').then(m => m.LecturerModule),
+    children: [
+      { path: 'dashboard', component: LecturerDashboardComponent },
+      { path: '', loadChildren: () => import('./modules/lecturer/lecturer.module').then(m => m.LecturerModule) }
+    ],
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.LECTURER] }
   },
@@ -51,7 +57,10 @@ export const routes: Routes = [
   },
   {
     path: 'college-admin',
-    loadChildren: () => import('./modules/college-admin/college-admin.module').then(m => m.CollegeAdminModule),
+    children: [
+      { path: 'dashboard', component: CollegeAdminDashboardComponent },
+      { path: '', loadChildren: () => import('./modules/college-admin/college-admin.module').then(m => m.CollegeAdminModule) }
+    ],
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.COLLEGE_ADMIN] }
   },
@@ -63,7 +72,10 @@ export const routes: Routes = [
   },
   {
     path: 'app-admin',
-    loadChildren: () => import('./modules/app-admin/app-admin.module').then(m => m.AppAdminModule),
+    children: [
+      { path: 'dashboard', component: AppAdminDashboardComponent },
+      { path: '', loadChildren: () => import('./modules/app-admin/app-admin.module').then(m => m.AppAdminModule) }
+    ],
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.APP_ADMIN] }
   },
