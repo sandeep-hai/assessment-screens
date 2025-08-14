@@ -1,4 +1,15 @@
 <div class="dashboard-container fade-in">
+  <!-- Header with logout -->
+  <div class="dashboard-header-bar">
+    <div class="header-content">
+      <h2>Assessment Tool</h2>
+      <button mat-raised-button color="warn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Switch User
+      </button>
+    </div>
+  </div>
+
   <div class="dashboard-header">
     <h1>Student Dashboard</h1>
     <p class="welcome-text">Welcome back! Here's what's happening today.</p>
@@ -31,61 +42,77 @@
     </mat-card>
   </div>
 
-  <div class="content-grid grid-container grid-cols-2">
-    <!-- Upcoming Events -->
-    <mat-card class="content-card">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>event</mat-icon>
-          Upcoming Events
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="upcomingEvents$ | async as events" class="events-list">
-          <div *ngFor="let event of events.slice(0, 3)" class="event-item">
-            <div class="event-info">
+  <!-- Activity Feed -->
+  <mat-card class="content-card feed-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>dynamic_feed</mat-icon>
+        Activity Feed
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Events Feed -->
+      <div *ngIf="upcomingEvents$ | async as events">
+        <div *ngFor="let event of events" class="feed-item event-feed-item">
+          <div class="feed-header">
+            <div class="feed-avatar">
+              <mat-icon>event</mat-icon>
+            </div>
+            <div class="feed-info">
               <h4>{{ event.title }}</h4>
-              <p class="event-date">{{ event.startDate | date:'medium' }}</p>
-              <mat-chip [class]="'status-' + (event.isVirtual ? 'virtual' : 'physical')">
-                {{ event.isVirtual ? 'Virtual' : 'Physical' }}
-              </mat-chip>
+              <p class="feed-time">{{ event.startDate | date:'medium' }}</p>
             </div>
+            <mat-chip [class]="'status-' + event.type">{{ event.type | titlecase }}</mat-chip>
+          </div>
+          <p class="feed-content">{{ event.description }}</p>
+          <div class="feed-details">
+            <span><mat-icon>schedule</mat-icon>{{ event.startDate | date:'shortTime' }} - {{ event.endDate | date:'shortTime' }}</span>
+            <span><mat-icon>{{ event.isVirtual ? 'videocam' : 'location_on' }}</mat-icon>{{ event.isVirtual ? 'Virtual Event' : event.location }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="feed-actions">
+            <button mat-raised-button color="primary" (click)="joinEvent(event)">Join Event</button>
+            <button mat-button><mat-icon>share</mat-icon>Share</button>
+            <button mat-button><mat-icon>bookmark</mat-icon>Save</button>
           </div>
         </div>
-        <div class="card-actions">
-          <button mat-button color="primary" routerLink="/student/events">
-            View All Events
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
 
-    <!-- Active Polls -->
-    <mat-card class="content-card">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>poll</mat-icon>
-          Active Polls
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="activePolls$ | async as polls" class="polls-list">
-          <div *ngFor="let poll of polls.slice(0, 2)" class="poll-item">
-            <h4>{{ poll.question }}</h4>
-            <div class="poll-stats">
-              <span>{{ poll.totalVotes }} votes</span>
-              <mat-chip class="status-active">Active</mat-chip>
+      <!-- Polls Feed -->
+      <div *ngIf="activePolls$ | async as polls">
+        <div *ngFor="let poll of polls" class="feed-item poll-feed-item">
+          <div class="feed-header">
+            <div class="feed-avatar poll-avatar">
+              <mat-icon>poll</mat-icon>
             </div>
+            <div class="feed-info">
+              <h4>Poll</h4>
+              <p class="feed-time">{{ poll.createdAt | date:'medium' }}</p>
+            </div>
+            <mat-chip class="status-active">Active</mat-chip>
+          </div>
+          <h3 class="poll-question">{{ poll.question }}</h3>
+          <div class="poll-options">
+            <button 
+              *ngFor="let option of poll.options" 
+              mat-stroked-button 
+              class="poll-option"
+              (click)="vote(poll, option)">
+              <span>{{ option }}</span>
+              <span class="vote-count">{{ poll.votes[option] || 0 }} votes</span>
+            </button>
+          </div>
+          <p class="poll-total">{{ poll.totalVotes }} total votes</p>
+          <mat-divider></mat-divider>
+          <div class="feed-actions">
+            <button mat-button><mat-icon>thumb_up</mat-icon>Like</button>
+            <button mat-button><mat-icon>comment</mat-icon>Comment</button>
+            <button mat-button><mat-icon>share</mat-icon>Share</button>
           </div>
         </div>
-        <div class="card-actions">
-          <button mat-button color="primary" routerLink="/student/polls">
-            View All Polls
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
   <!-- Available Exams -->
   <mat-card class="content-card">
