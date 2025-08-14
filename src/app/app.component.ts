@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './core/services/auth.service';
+import { UserRole } from './core/models/user.model';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 @Component({
