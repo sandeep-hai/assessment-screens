@@ -47,5 +47,3 @@ export const routes: Routes = [
     redirectTo: '/auth/login'
   }
 ];
-
-export { routes }
