@@ -154,40 +154,57 @@ import { MatDividerModule } from '@angular/material/divider';
   `
 })
 export class DashboardComponent {
+  
   events = [
     {
-      title: 'Advanced JavaScript Workshop',
-      date: 'Today, 2:00 PM',
-      time: '2:00 PM - 4:00 PM',
-      location: 'Virtual Meeting Room',
-      isVirtual: true,
+      title: 'AI in Education Webinar',
+      description: 'Join us for an exciting discussion about the future of AI in educational technology and how it\'s transforming the learning experience.',
+      date: '2 hours ago',
+      time: '10:00 AM - 12:00 PM',
       type: 'webinar',
-      description: 'Deep dive into modern JavaScript features including ES6+, async/await, and advanced patterns.'
+      isVirtual: true,
+      location: 'Virtual Event'
     },
     {
-      title: 'Career Fair 2024',
-      date: 'Tomorrow, 10:00 AM',
-      time: '10:00 AM - 6:00 PM',
-      location: 'Main Campus Hall',
+      title: 'Programming Workshop',
+      description: 'Hands-on workshop covering advanced JavaScript concepts and modern web development practices.',
+      date: '5 hours ago',
+      time: '2:00 PM - 5:00 PM',
+      type: 'workshop',
       isVirtual: false,
-      type: 'event',
-      description: 'Meet with top tech companies and explore internship and full-time opportunities.'
+      location: 'Room 101, CS Building'
+    },
+    {
+      title: 'Career Guidance Seminar',
+      description: 'Industry experts will share insights about career opportunities in technology and software development.',
+      date: '1 day ago',
+      time: '11:00 AM - 1:00 PM',
+      type: 'seminar',
+      isVirtual: true,
+      location: 'Virtual Event'
     }
   ];
 
   polls = [
     {
-      question: 'Which programming language should we focus on next semester?',
-      options: ['Python', 'Java', 'C++', 'JavaScript'],
-      votes: { 'Python': 45, 'Java': 32, 'C++': 18, 'JavaScript': 67 },
-      totalVotes: 162,
-      date: '2 hours ago'
+      question: 'Which programming language would you like to learn next?',
+      options: ['Python', 'Java', 'JavaScript', 'C++'],
+      votes: { 'Python': 45, 'Java': 32, 'JavaScript': 28, 'C++': 15 },
+      totalVotes: 120,
+      date: '3 hours ago'
     },
     {
-      question: 'What time works best for study group sessions?',
-      options: ['Morning (8-10 AM)', 'Afternoon (2-4 PM)', 'Evening (6-8 PM)', 'Night (8-10 PM)'],
-      votes: { 'Morning (8-10 AM)': 23, 'Afternoon (2-4 PM)': 45, 'Evening (6-8 PM)': 78, 'Night (8-10 PM)': 34 },
-      totalVotes: 180,
+      question: 'What time works best for online lectures?',
+      options: ['Morning (9-11 AM)', 'Afternoon (2-4 PM)', 'Evening (6-8 PM)'],
+      votes: { 'Morning (9-11 AM)': 35, 'Afternoon (2-4 PM)': 42, 'Evening (6-8 PM)': 28 },
+      totalVotes: 105,
+      date: '6 hours ago'
+    },
+    {
+      question: 'How satisfied are you with the current assessment system?',
+      options: ['Very Satisfied', 'Satisfied', 'Neutral', 'Needs Improvement'],
+      votes: { 'Very Satisfied': 25, 'Satisfied': 48, 'Neutral': 22, 'Needs Improvement': 15 },
+      totalVotes: 110,
       date: '1 day ago'
     }
   ];
@@ -199,10 +216,9 @@ export class DashboardComponent {
   }
 
   vote(poll: any, option: string) {
-    if (!poll.votes[option]) {
-      poll.votes[option] = 0;
-    }
-    poll.votes[option]++;
+    console.log('Voting for:', option, 'in poll:', poll.question);
+    // In a real app, this would make an API call
+    poll.votes[option] = (poll.votes[option] || 0) + 1;
     poll.totalVotes++;
   }
 }
