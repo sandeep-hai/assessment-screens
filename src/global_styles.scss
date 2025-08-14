@@ -1,27 +1,28 @@
-/* Import Angular Material theming functions */
-@use '~@angular/material/theming' as mat;
+
+///* Import Angular Material theming functions */
+//@use '~@angular/material/theming' as mat;
 
 /* Include the common styles for Angular Material */
-@include mat.core();
+//@include mat.core();
 
 /* Define the palettes for your theme using the Material Design palettes */
-$primary: mat.define-palette(mat.$pink-palette, 700);
-$accent: mat.define-palette(mat.$green-palette, 500);
-$warn: mat.define-palette(mat.$red-palette);
+//$primary: mat.define-palette(mat.$pink-palette, 700);
+//$accent: mat.define-palette(mat.$green-palette, 500);
+//$warn: mat.define-palette(mat.$red-palette);
 
 /* Create the theme object */
-$theme: mat.define-light-theme((
-  color: (
-    primary: $primary,
-    accent: $accent,
-    warn: $warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
+//$theme: mat.define-light-theme((
+//  color: (
+ //   primary: $primary,
+  //  accent: $accent,
+  //  warn: $warn,
+ // ),
+  //typography: mat.define-typography-config(),
+  //density: 0,
+//));
 
 /* Include theme styles for all components */
-@include mat.all-component-themes($theme);
+//@include mat.all-component-themes($theme);
 
 /* Global styles */
 html, body { 
