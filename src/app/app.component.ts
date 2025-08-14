@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './core/services/auth.service';
-import { SharedModule } from './shared/shared.module';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 @Component({
@@ -12,7 +11,7 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SharedModule, NavigationComponent]
+  imports: [CommonModule, RouterOutlet, NavigationComponent]
 })
 export class AppComponent implements OnInit {
   title = 'Assessment Tool';
