@@ -86,16 +86,16 @@ export class OtpVerificationComponent implements OnInit {
   private redirectBasedOnRole(role: UserRole): void {
     switch (role) {
       case UserRole.STUDENT:
-        this.router.navigate(['/student']);
+        this.router.navigate(['/student/dashboard']);
         break;
       case UserRole.LECTURER:
-        this.router.navigate(['/lecturer']);
+        this.router.navigate(['/lecturer/dashboard']);
         break;
       case UserRole.COLLEGE_ADMIN:
-        this.router.navigate(['/college-admin']);
+        this.router.navigate(['/college-admin/dashboard']);
         break;
       case UserRole.APP_ADMIN:
-        this.router.navigate(['/app-admin']);
+        this.router.navigate(['/app-admin/dashboard']);
         break;
       default:
         this.router.navigate(['/']);
