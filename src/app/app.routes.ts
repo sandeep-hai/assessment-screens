@@ -39,7 +39,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '',
+    redirectTo: '/auth/login',
     pathMatch: 'full'
   },
   {
@@ -47,3 +47,5 @@ export const routes: Routes = [
     redirectTo: '/auth/login'
   }
 ];
+
+export { routes }
