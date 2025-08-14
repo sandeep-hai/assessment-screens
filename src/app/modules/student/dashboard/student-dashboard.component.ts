@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MockDataService } from '../../../core/services/mock-data.service';
 import { Event, Poll, Exam, User } from '../../../core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
@@ -22,7 +23,8 @@ import { AuthService } from '../../../core/services/auth.service';
     MatIconModule,
     MatButtonModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatToolbarModule
   ],
   templateUrl: './student-dashboard.component.html',
   styleUrls: ['./student-dashboard.component.css']
@@ -73,5 +75,21 @@ export class StudentDashboardComponent implements OnInit {
     // Mock voting logic - in real app this would call a service
     poll.votes[option] = (poll.votes[option] || 0) + 1;
     poll.totalVotes++;
+  }
+
+  likePost(item: any): void {
+    console.log('Liked:', item.title || item.question);
+  }
+
+  commentOnPost(item: any): void {
+    console.log('Comment on:', item.title || item.question);
+  }
+
+  sharePost(item: any): void {
+    console.log('Shared:', item.title || item.question);
+  }
+
+  savePost(item: any): void {
+    console.log('Saved:', item.title || item.question);
   }
 }
