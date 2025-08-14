@@ -40,7 +40,8 @@ export class AppComponent implements OnInit {
   private checkAuthenticationAndRedirect(): void {
     const currentUrl = this.router.url;
     const isAuthenticated = this.authService.isAuthenticated();
-    
+    console.log('Current URL:', currentUrl, 'Authenticated:', isAuthenticated);
+
     // Only redirect if not already on the correct page
     if (isAuthenticated) {
       // If authenticated and on auth pages or root, redirect to dashboard
@@ -80,6 +81,7 @@ export class AppComponent implements OnInit {
     const authRoutes = ['/auth', '/unauthorized'];
     const isAuthRoute = authRoutes.some(route => url.startsWith(route));
     const isAuthenticated = this.authService.isAuthenticated();
+    console.log('Should show navigation:', url, 'isAuthRoute:', isAuthRoute, 'isAuthenticated:', isAuthenticated);
 
     return !isAuthRoute && isAuthenticated;
   }

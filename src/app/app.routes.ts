@@ -3,11 +3,27 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { UserRole } from './core/models/user.model';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { LoginComponent } from './auth/login/login.component';
+import { OtpVerificationComponent } from './auth/otp-verification/otp-verification.component';
+import { StudentDashboardComponent } from './modules/student/dashboard/student-dashboard.component';
+import { LecturerDashboardComponent } from './modules/lecturer/dashboard/lecturer-dashboard.component';
+import { CollegeAdminDashboardComponent } from './modules/college-admin/dashboard/college-admin-dashboard.component';
+import { AppAdminDashboardComponent } from './modules/app-admin/dashboard/app-admin-dashboard.component';
 
 export const routes: Routes = [
   {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    path: 'auth/login',
+    component: LoginComponent
+  },
+  {
+    path: 'auth/verify-otp',
+    component: OtpVerificationComponent
+  },
+  {
+    path: 'student/dashboard',
+    component: StudentDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRoles: [UserRole.STUDENT] }
   },
   {
     path: 'student',
@@ -16,16 +32,34 @@ export const routes: Routes = [
     data: { expectedRoles: [UserRole.STUDENT] }
   },
   {
+    path: 'lecturer/dashboard',
+    component: LecturerDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRoles: [UserRole.LECTURER] }
+  },
+  {
     path: 'lecturer',
     loadChildren: () => import('./modules/lecturer/lecturer.module').then(m => m.LecturerModule),
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.LECTURER] }
   },
   {
+    path: 'college-admin/dashboard',
+    component: CollegeAdminDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRoles: [UserRole.COLLEGE_ADMIN] }
+  },
+  {
     path: 'college-admin',
     loadChildren: () => import('./modules/college-admin/college-admin.module').then(m => m.CollegeAdminModule),
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.COLLEGE_ADMIN] }
+  },
+  {
+    path: 'app-admin/dashboard',
+    component: AppAdminDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRoles: [UserRole.APP_ADMIN] }
   },
   {
     path: 'app-admin',
