@@ -3,6 +3,35 @@
   margin: 0 auto;
 }
 
+.dashboard-header-bar {
+  background: white;
+  padding: 16px 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h2 {
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.header-content button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .dashboard-header {
   margin-bottom: 32px;
   text-align: center;
@@ -20,6 +49,151 @@
 
 .stats-grid {
   margin-bottom: 32px;
+}
+
+.feed-card {
+  margin-bottom: 32px;
+}
+
+.feed-card mat-card-header {
+  background-color: #f5f5f5;
+  padding: 16px;
+  margin: -24px -24px 24px -24px;
+}
+
+.feed-card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
+}
+
+.feed-item {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.feed-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.feed-avatar mat-icon {
+  color: white;
+  font-size: 20px;
+}
+
+.poll-avatar {
+  background: linear-gradient(135deg, var(--success-color), #2e7d32);
+}
+
+.feed-info {
+  flex: 1;
+}
+
+.feed-info h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.feed-time {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.feed-content {
+  color: var(--text-primary);
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+.feed-details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 12px 0;
+}
+
+.feed-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-details mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--primary-color);
+}
+
+.feed-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.feed-actions button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.poll-question {
+  color: var(--text-primary);
+  margin: 12px 0 16px 0;
+  font-size: 18px;
+}
+
+.poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.poll-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.poll-option:hover {
+  background-color: rgba(194, 24, 91, 0.05);
+}
+
+.vote-count {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.poll-total {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 12px 0;
 }
 
 .stat-card {
