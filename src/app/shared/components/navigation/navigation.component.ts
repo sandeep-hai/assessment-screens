@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter } from 'rxjs';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { MatChip } from '@angular/material/chips';
 import { MatDivider } from '@angular/material/divider';
 import { AuthService } from '../../../core/services/auth.service';
 import { User, UserRole } from '../../../core/models/user.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
@@ -24,17 +25,29 @@ import { User, UserRole } from '../../../core/models/user.model';
 export class NavigationComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   isMenuOpen = false;
+  canGoBack = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => this.currentUser = user);
+
+    // Track navigation to show/hide back button
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.canGoBack = window.history.length > 1;
+      });
   }
 
   ngOnDestroy(): void {
@@ -46,6 +59,21 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  goBack(): void {
+    this.location.back();
+  }
+
+  goHome(): void {
+    if (this.currentUser) {
+      const homeRoute = this.getDashboardRoute();
+      this.router.navigate([homeRoute]);
+    }
+  }
+
+  switchUser(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
@@ -62,10 +90,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
       case UserRole.STUDENT:
         return [
           ...baseItems,
-          { icon: 'event', label: 'Events', route: '/student/events' },
+          { icon: 'dynamic_feed', label: 'Feed', route: '/student/events' },
           { icon: 'quiz', label: 'Exams', route: '/student/exams' },
           { icon: 'assignment', label: 'Assignments', route: '/student/assignments' },
-          { icon: 'poll', label: 'Polls', route: '/student/polls' }
+          { icon: 'poll', label: 'Polls', route: '/student/polls' },
+          { icon: 'analytics', label: 'Analytics', route: '/student/analytics/exam' },
+          { icon: 'article', label: 'Blogs', route: '/student/blogs' },
+          { icon: 'groups', label: 'Community', route: '/student/community' },
+          { icon: 'report', label: 'Complaints', route: '/student/complaints' }
         ];
 
       case UserRole.LECTURER:

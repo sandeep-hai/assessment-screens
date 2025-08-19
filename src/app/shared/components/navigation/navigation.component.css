@@ -2,13 +2,28 @@
   position: fixed;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: 64px;
+  padding: 0 16px;
+}
+
+.back-button, .home-button {
+  margin-right: 8px;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+}
+
+.back-button mat-icon, .home-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .app-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  margin-left: 16px;
+  margin-left: 8px;
 }
 
 .user-info {
@@ -20,12 +35,14 @@
 .user-name {
   font-size: 14px;
   font-weight: 500;
+  color: white;
 }
 
 .role-chip {
   background-color: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
   font-size: 12px;
+  height: 28px;
 }
 
 .sidenav-container {
@@ -35,11 +52,12 @@
 
 .sidenav {
   width: 280px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
 }
 
 .sidenav-header {
-  padding: 16px 24px;
-  background-color: var(--primary-color);
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
   margin-bottom: 16px;
 }
@@ -51,56 +69,110 @@
 }
 
 .nav-item {
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 4px 16px;
+  min-height: 48px;
 }
 
 .nav-item:hover {
-  background-color: rgba(156, 34, 68, 0.08) !important;
+  background-color: rgba(194, 24, 91, 0.08) !important;
+  transform: translateX(4px);
 }
 
 .nav-item.active {
-  background-color: rgba(156, 34, 68, 0.12) !important;
-  border-right: 3px solid var(--primary-color);
+  background-color: rgba(194, 24, 91, 0.12) !important;
+  border-left: 4px solid var(--primary-color);
+  font-weight: 500;
+}
+
+.nav-item mat-icon {
+  color: var(--primary-color);
+  margin-right: 16px;
 }
 
 .main-content {
-  padding: 24px;
-  background-color: var(--background-color);
+  background-color: #f8f9fa;
   min-height: calc(100vh - 64px);
+  padding: 0;
 }
 
 .user-menu-header {
   padding: 16px;
   text-align: center;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .user-menu-header strong {
   display: block;
   color: var(--text-primary);
+  font-size: 16px;
+  margin-bottom: 4px;
 }
 
 .user-menu-header small {
   color: var(--text-secondary);
+  font-size: 12px;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .sidenav {
     width: 100vw;
   }
   
-  .main-content {
-    padding: 16px;
+  .app-title {
+    font-size: 16px;
+  }
+  
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .user-info {
+    gap: 8px;
+  }
+  
+  .nav-header {
+    padding: 0 12px;
   }
 }
 
 @media (max-width: 480px) {
-  .app-title {
-    font-size: 16px;
-    margin-left: 8px;
+  .back-button, .home-button {
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
   }
   
-  .main-content {
-    padding: 8px;
+  .app-title {
+    font-size: 14px;
+    margin-left: 4px;
+  }
+  
+  .role-chip {
+    font-size: 10px;
+    height: 24px;
+  }
+}
+
+/* Animation */
+.nav-item {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

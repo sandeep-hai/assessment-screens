@@ -93,19 +93,19 @@ import { StudentDashboardComponent } from './dashboard/student-dashboard.compone
     
     RouterModule.forChild([
       { path: 'dashboard', component: StudentDashboardComponent },
+      { path: 'events', component: StudentEventsComponent },
       { path: 'exams/take', component: TakeExamComponent },
       { path: 'exams/take/:id', component: TakeExamComponent },
       { path: 'exams/view', component: ViewExamComponent },
       { path: 'analytics/exam', component: ExamAnalyticsComponent },
       { path: 'analytics/skills/academic', component: AcademicSkillAnalyticsComponent },
       { path: 'analytics/skills/non-academic', component: NonAcademicSkillAnalyticsComponent },
-      { path: 'events', component: StudentEventsComponent },
       { path: 'blogs', component: StudentBlogsComponent },
       { path: 'community', component: CommunityComponent },
       { path: 'assignments', component: AssignmentsComponent },
       { path: 'complaints', component: ComplaintsComponent },
       { path: 'polls', component: StudentPollsComponent },
-      { path: '', redirectTo: 'exams/take', pathMatch: 'full' }
+      { path: '', redirectTo: 'events', pathMatch: 'full' }
     ])
   ]
 })

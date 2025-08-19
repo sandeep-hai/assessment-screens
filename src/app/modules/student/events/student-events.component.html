@@ -1,93 +1,254 @@
-<div class="events-container fade-in">
-  <div class="events-header">
-    <h1>Events</h1>
-    <button 
-      mat-raised-button 
-      color="primary" 
-      class="create-btn"
-      (click)="openCreateEventDialog()">
-      <mat-icon>add</mat-icon>
-      Create Event
-    </button>
-  </div>
+<app-navigation>
+  <div class="events-container">
+    <div class="events-content">
+      <!-- Create Post Section -->
+      <mat-card class="create-post-card">
+        <mat-card-content>
+          <div class="create-post-header">
+            <div class="user-avatar">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <button mat-stroked-button class="create-post-input" (click)="openCreatePostDialog()">
+              What's on your mind, {{ getCurrentUserName() }}?
+            </button>
+          </div>
+          
+          <mat-divider style="margin: 16px 0;"></mat-divider>
+          
+          <div class="create-post-actions">
+            <button mat-button class="action-btn" (click)="openCreateEventDialog()">
+              <mat-icon style="color: #1877f2;">event</mat-icon>
+              <span>Event</span>
+            </button>
+            <button mat-button class="action-btn" (click)="createPoll()">
+              <mat-icon style="color: #42b883;">poll</mat-icon>
+              <span>Poll</span>
+            </button>
+            <button mat-button class="action-btn" (click)="sharePhoto()">
+              <mat-icon style="color: #45bd62;">photo_camera</mat-icon>
+              <span>Photo</span>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-  <mat-tab-group [(selectedIndex)]="selectedTab" class="events-tabs">
-    <mat-tab label="All Events">
-      <div class="events-grid grid-container grid-cols-2" *ngIf="events$ | async as events">
-        <mat-card 
-          *ngFor="let event of events" 
-          class="event-card card-elevated">
+      <!-- Feed Posts -->
+      <div class="feed-posts">
+        <!-- Event Posts -->
+        <mat-card *ngFor="let event of events$ | async" class="feed-post-card">
           <mat-card-header>
-            <mat-card-title>{{ event.title }}</mat-card-title>
-            <mat-card-subtitle>
-              <mat-chip [color]="getEventTypeColor(event.type)">
-                {{ event.type | titlecase }}
-              </mat-chip>
+            <div mat-card-avatar class="post-avatar">
+              <mat-icon>event</mat-icon>
+            </div>
+            <mat-card-title class="post-title">{{ event.title }}</mat-card-title>
+            <mat-card-subtitle class="post-subtitle">
+              <div class="post-meta">
+                <span>Event • {{ event.startDate | date:'mediumDate' }}</span>
+                <mat-chip [style.background-color]="getEventTypeColor(event.type)" class="event-type-chip">
+                  {{ event.type | titlecase }}
+                </mat-chip>
+              </div>
             </mat-card-subtitle>
           </mat-card-header>
-          
-          <mat-card-content>
-            <p>{{ event.description }}</p>
+
+          <mat-card-content class="post-content">
+            <p class="post-text">{{ event.description }}</p>
             
-            <div class="event-details">
-              <div class="detail-item">
+            <div class="event-details-card">
+              <div class="event-detail-item">
                 <mat-icon>schedule</mat-icon>
-                <span>{{ event.startDate | date:'medium' }}</span>
+                <span>{{ event.startDate | date:'medium' }} - {{ event.endDate | date:'shortTime' }}</span>
               </div>
-              
-              <div class="detail-item">
-                <mat-icon>access_time</mat-icon>
-                <span>{{ event.startDate | date:'shortTime' }} - {{ event.endDate | date:'shortTime' }}</span>
-              </div>
-              
-              <div class="detail-item">
+              <div class="event-detail-item">
                 <mat-icon>{{ event.isVirtual ? 'videocam' : 'location_on' }}</mat-icon>
                 <span>{{ event.isVirtual ? 'Virtual Event' : event.location }}</span>
               </div>
-              
-              <div class="detail-item" *ngIf="event.maxAttendees">
+              <div class="event-detail-item" *ngIf="event.maxAttendees">
                 <mat-icon>group</mat-icon>
-                <span>{{ event.attendees.length }}/{{ event.maxAttendees }} attendees</span>
+                <span>{{ event.attendees.length }}/{{ event.maxAttendees }} attending</span>
               </div>
             </div>
           </mat-card-content>
-          
-          <mat-card-actions>
-            <button 
-              mat-raised-button 
-              color="primary"
-              (click)="joinEvent(event)">
-              Join Event
+
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="post-actions">
+            <button mat-button class="action-button like-btn" (click)="likePost(event)">
+              <mat-icon>thumb_up</mat-icon>
+              <span>Like</span>
+              <span class="action-count">{{ event.likes || 0 }}</span>
             </button>
-            <button mat-button>
+            <button mat-button class="action-button comment-btn" (click)="commentOnPost(event)">
+              <mat-icon>comment</mat-icon>
+              <span>Comment</span>
+              <span class="action-count">{{ event.comments || 0 }}</span>
+            </button>
+            <button mat-button class="action-button share-btn" (click)="sharePost(event)">
               <mat-icon>share</mat-icon>
-              Share
+              <span>Share</span>
+            </button>
+            <button mat-raised-button color="primary" class="join-btn" (click)="joinEvent(event)">
+              <mat-icon>event_available</mat-icon>
+              <span>Join Event</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Poll Posts -->
+        <mat-card *ngFor="let poll of polls$ | async" class="feed-post-card">
+          <mat-card-header>
+            <div mat-card-avatar class="post-avatar poll-avatar">
+              <mat-icon>poll</mat-icon>
+            </div>
+            <mat-card-title class="post-title">Poll</mat-card-title>
+            <mat-card-subtitle class="post-subtitle">
+              <div class="post-meta">
+                <span>{{ poll.createdAt | date:'mediumDate' }}</span>
+                <mat-chip class="poll-active-chip">Active</mat-chip>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="post-content">
+            <h3 class="poll-question">{{ poll.question }}</h3>
+            
+            <div class="poll-options">
+              <button 
+                *ngFor="let option of poll.options" 
+                mat-stroked-button 
+                class="poll-option-btn"
+                (click)="vote(poll, option)">
+                <div class="poll-option-content">
+                  <span class="option-text">{{ option }}</span>
+                  <div class="option-stats">
+                    <span class="vote-count">{{ poll.votes[option] || 0 }} votes</span>
+                    <div class="vote-bar">
+                      <div class="vote-fill" [style.width.%]="getVotePercentage(poll, option)"></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            
+            <p class="poll-total">{{ poll.totalVotes }} total votes</p>
+          </mat-card-content>
+
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="post-actions">
+            <button mat-button class="action-button like-btn" (click)="likePost(poll)">
+              <mat-icon>thumb_up</mat-icon>
+              <span>Like</span>
+              <span class="action-count">{{ poll.likes || 0 }}</span>
+            </button>
+            <button mat-button class="action-button comment-btn" (click)="commentOnPost(poll)">
+              <mat-icon>comment</mat-icon>
+              <span>Comment</span>
+              <span class="action-count">{{ poll.comments || 0 }}</span>
+            </button>
+            <button mat-button class="action-button share-btn" (click)="sharePost(poll)">
+              <mat-icon>share</mat-icon>
+              <span>Share</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Sample Text Posts -->
+        <mat-card class="feed-post-card">
+          <mat-card-header>
+            <div mat-card-avatar class="post-avatar user-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+            <mat-card-title class="post-title">Study Group Formation</mat-card-title>
+            <mat-card-subtitle class="post-subtitle">
+              <div class="post-meta">
+                <span>Sarah Johnson • 3 hours ago</span>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="post-content">
+            <p class="post-text">
+              Hey everyone! 👋 I'm organizing a study group for the upcoming Data Structures exam. 
+              We'll be meeting every Tuesday and Thursday at 6 PM in the library. 
+              Anyone interested in joining? Let me know in the comments! 📚✨
+            </p>
+            
+            <div class="post-image">
+              <img src="https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                   alt="Study books" class="feed-image">
+            </div>
+          </mat-card-content>
+
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="post-actions">
+            <button mat-button class="action-button like-btn">
+              <mat-icon>thumb_up</mat-icon>
+              <span>Like</span>
+              <span class="action-count">24</span>
+            </button>
+            <button mat-button class="action-button comment-btn">
+              <mat-icon>comment</mat-icon>
+              <span>Comment</span>
+              <span class="action-count">8</span>
+            </button>
+            <button mat-button class="action-button share-btn">
+              <mat-icon>share</mat-icon>
+              <span>Share</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Another Sample Post -->
+        <mat-card class="feed-post-card">
+          <mat-card-header>
+            <div mat-card-avatar class="post-avatar user-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+            <mat-card-title class="post-title">Project Showcase</mat-card-title>
+            <mat-card-subtitle class="post-subtitle">
+              <div class="post-meta">
+                <span>Mike Chen • 5 hours ago</span>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="post-content">
+            <p class="post-text">
+              Just finished my web development project! 🚀 Built a full-stack e-commerce application 
+              using React, Node.js, and MongoDB. The journey was challenging but incredibly rewarding. 
+              Special thanks to my teammates for their amazing collaboration! 💪
+            </p>
+            
+            <div class="post-tags">
+              <mat-chip class="post-tag">#WebDevelopment</mat-chip>
+              <mat-chip class="post-tag">#React</mat-chip>
+              <mat-chip class="post-tag">#NodeJS</mat-chip>
+              <mat-chip class="post-tag">#MongoDB</mat-chip>
+            </div>
+          </mat-card-content>
+
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="post-actions">
+            <button mat-button class="action-button like-btn">
+              <mat-icon>thumb_up</mat-icon>
+              <span>Like</span>
+              <span class="action-count">42</span>
+            </button>
+            <button mat-button class="action-button comment-btn">
+              <mat-icon>comment</mat-icon>
+              <span>Comment</span>
+              <span class="action-count">15</span>
+            </button>
+            <button mat-button class="action-button share-btn">
+              <mat-icon>share</mat-icon>
+              <span>Share</span>
             </button>
           </mat-card-actions>
         </mat-card>
       </div>
-    </mat-tab>
-
-    <mat-tab label="My Events">
-      <div class="no-events" *ngIf="!(events$ | async)?.length">
-        <mat-icon class="no-events-icon">event_busy</mat-icon>
-        <h3>No events created yet</h3>
-        <p>Create your first event to get started.</p>
-        <button 
-          mat-raised-button 
-          color="primary"
-          (click)="openCreateEventDialog()">
-          Create Event
-        </button>
-      </div>
-    </mat-tab>
-
-    <mat-tab label="Joined Events">
-      <div class="no-events">
-        <mat-icon class="no-events-icon">event_available</mat-icon>
-        <h3>No joined events</h3>
-        <p>Join events to see them here.</p>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    </div>
+  </div>
+</app-navigation>

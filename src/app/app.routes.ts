@@ -26,6 +26,12 @@ export const routes: Routes = [
     data: { expectedRoles: [UserRole.STUDENT] }
   },
   {
+    path: 'student/events',
+    loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRoles: [UserRole.STUDENT] }
+  },
+  {
     path: 'lecturer/dashboard',
     component: LecturerDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
