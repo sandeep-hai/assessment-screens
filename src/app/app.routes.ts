@@ -85,7 +85,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/auth/login',
+    redirectTo: '/student/dashboard',
     pathMatch: 'full'
   },
   {
