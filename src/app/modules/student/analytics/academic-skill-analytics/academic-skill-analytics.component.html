@@ -99,7 +99,7 @@
     <!-- Trend Analysis -->
     <mat-card class="trend-card">
       <mat-card-header>
-        <mat-card-title>{{ timeframeTrends[selectedTimeframe as keyof typeof timeframeTrends].label }}</mat-card-title>
+        <mat-card-title>{{ timeframeTrends[selectedTimeframe].label }}</mat-card-title>
         <mat-card-subtitle>Performance trends over time</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -111,7 +111,7 @@
             <div class="sample-data">
               <h4>Sample {{ selectedTimeframe }} data:</h4>
               <div class="data-points">
-                <span *ngFor="let point of timeframeTrends[selectedTimeframe as keyof typeof timeframeTrends].data" 
+                <span *ngFor="let point of timeframeTrends[selectedTimeframe].data" 
                       class="data-point">{{ point }}%</span>
               </div>
             </div>
