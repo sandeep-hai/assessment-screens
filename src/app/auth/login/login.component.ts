@@ -44,10 +44,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check if already logged in
-    if (this.authService.isAuthenticated()) {
-      this.redirectBasedOnRole();
-    }
+    // Login page is now the homepage - no auto-redirect
   }
 
   selectUser(email: string): void {
