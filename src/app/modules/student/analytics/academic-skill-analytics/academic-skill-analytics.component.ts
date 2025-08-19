@@ -10,6 +10,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../../core/services/auth.service';
 
+interface TimeframeTrendData {
+  label: string;
+  data: number[];
+}
+
+interface TimeframeTrends {
+  day: TimeframeTrendData;
+  week: TimeframeTrendData;
+  month: TimeframeTrendData;
+  year: TimeframeTrendData;
+}
+
 @Component({
   selector: 'app-academic-skill-analytics',
   standalone: true,
@@ -27,7 +39,7 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrls: ['./academic-skill-analytics.component.css']
 })
 export class AcademicSkillAnalyticsComponent implements OnInit {
-  selectedTimeframe = 'month';
+  selectedTimeframe: keyof TimeframeTrends = 'month';
   selectedCourse = 'all';
 
   courseData = [
@@ -54,7 +66,7 @@ export class AcademicSkillAnalyticsComponent implements OnInit {
     }
   ];
 
-  timeframeTrends = {
+  timeframeTrends: TimeframeTrends = {
     day: { label: 'Daily Progress', data: [75, 78, 82, 79, 85, 88, 90] },
     week: { label: 'Weekly Progress', data: [70, 75, 80, 85, 88] },
     month: { label: 'Monthly Progress', data: [65, 70, 75, 82, 88] },
