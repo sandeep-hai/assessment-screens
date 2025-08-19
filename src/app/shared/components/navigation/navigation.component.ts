@@ -55,10 +55,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
   goBack(): void {
     this.location.back();
   }
@@ -68,6 +64,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
       const homeRoute = this.getDashboardRoute();
       this.router.navigate([homeRoute]);
     }
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   switchUser(): void {
