@@ -132,8 +132,6 @@ export interface Event {
   isActive: boolean;
   likes?: number;
   comments?: number;
-  likes?: number;
-  comments?: number;
 }
 
 export enum EventType {
