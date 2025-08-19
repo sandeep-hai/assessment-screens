@@ -34,10 +34,56 @@
     
     <div class="demo-credentials">
       <h4>Demo Credentials:</h4>
-      <p><strong>Student:</strong> student1&#64;humera.ai / OTP: 111111</p>
-      <p><strong>Lecturer:</strong> lecturer1&#64;humera.ai / OTP: 222222</p>
-      <p><strong>College Admin:</strong> collegeadmin&#64;humera.ai / OTP: 333333</p>
-      <p><strong>App Admin:</strong> appadmin&#64;humera.ai / OTP: 444444</p>
+      <div class="user-cards">
+        <div class="user-card" (click)="selectUser('student1@humera.ai')">
+          <div class="user-avatar student-avatar">
+            <mat-icon>school</mat-icon>
+          </div>
+          <div class="user-info">
+            <h5>John Doe</h5>
+            <p>Student</p>
+            <small>student1@humera.ai</small>
+          </div>
+        </div>
+        
+        <div class="user-card" (click)="selectUser('lecturer1@humera.ai')">
+          <div class="user-avatar lecturer-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="user-info">
+            <h5>Jane Smith</h5>
+            <p>Lecturer</p>
+            <small>lecturer1@humera.ai</small>
+          </div>
+        </div>
+        
+        <div class="user-card" (click)="selectUser('collegeadmin@humera.ai')">
+          <div class="user-avatar admin-avatar">
+            <mat-icon>business</mat-icon>
+          </div>
+          <div class="user-info">
+            <h5>Robert Johnson</h5>
+            <p>College Admin</p>
+            <small>collegeadmin@humera.ai</small>
+          </div>
+        </div>
+        
+        <div class="user-card" (click)="selectUser('appadmin@humera.ai')">
+          <div class="user-avatar app-admin-avatar">
+            <mat-icon>admin_panel_settings</mat-icon>
+          </div>
+          <div class="user-info">
+            <h5>Alice Wilson</h5>
+            <p>App Admin</p>
+            <small>appadmin@humera.ai</small>
+          </div>
+        </div>
+      </div>
+      
+      <div class="login-instructions">
+        <p><strong>Quick Login:</strong> Click on any user card above to auto-fill their email, then click "Send OTP"</p>
+        <p><strong>Manual Login:</strong> Enter any email above and use OTP: 111111 for Student, 222222 for Lecturer, 333333 for College Admin, 444444 for App Admin</p>
+      </div>
     </div>
   </mat-card>
 </div>

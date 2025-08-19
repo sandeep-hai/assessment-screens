@@ -47,6 +47,119 @@
   color: var(--text-secondary);
 }
 
+.user-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.user-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(194, 24, 91, 0.15);
+}
+
+.user-card.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(194, 24, 91, 0.05);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.student-avatar {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+}
+
+.lecturer-avatar {
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+}
+
+.admin-avatar {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.app-admin-avatar {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+}
+
+.user-info {
+  flex: 1;
+  text-align: left;
+}
+
+.user-info h5 {
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-info p {
+  margin: 0 0 2px 0;
+  color: var(--primary-color);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-info small {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.login-instructions {
+  background-color: #f0f8ff;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid var(--info-color);
+}
+
+.login-instructions p {
+  margin: 6px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .user-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-card {
+    padding: 10px;
+  }
+  
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .login-instructions {
+    padding: 10px;
+  }
+}
+
 @media (max-width: 480px) {
   .login-card {
     padding: 16px;

@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/services/auth.service';
 import { UserRole } from '../../core/models/user.model';
 
@@ -23,12 +24,14 @@ import { UserRole } from '../../core/models/user.model';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
+  selectedUserEmail = '';
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +47,23 @@ export class LoginComponent implements OnInit {
     // Check if already logged in
     if (this.authService.isAuthenticated()) {
       this.redirectBasedOnRole();
+    }
+  }
+
+  selectUser(email: string): void {
+    this.selectedUserEmail = email;
+    this.loginForm.patchValue({ email });
+    
+    // Add visual feedback
+    const userCards = document.querySelectorAll('.user-card');
+    userCards.forEach(card => card.classList.remove('selected'));
+    
+    // Find and highlight the selected card
+    const selectedCard = Array.from(userCards).find(card => 
+      card.textContent?.includes(email)
+    );
+    if (selectedCard) {
+      selectedCard.classList.add('selected');
     }
   }
 
