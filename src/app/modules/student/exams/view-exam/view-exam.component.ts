@@ -155,6 +155,16 @@ export class ViewExamComponent implements OnInit {
   }
 
   getCorrectAnswersCount(): number {
-    return this.selectedExam ? this.selectedExam.questions.filter(q => q.isCorrect).length : 0;
+    if (!this.selectedExam) {
+      return 0;
+    }
+    
+    let count = 0;
+    for (const question of this.selectedExam.questions) {
+      if (question.isCorrect) {
+        count++;
+      }
+    }
+    return count;
   }
 }
