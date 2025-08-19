@@ -45,6 +45,12 @@ html, body {
   --warning-color: #ff9800;
   --error-color: #f44336;
   --info-color: #2196f3;
+  
+  /* Social Media Colors */
+  --facebook-blue: #1877f2;
+  --like-blue: #1877f2;
+  --comment-green: #42b883;
+  --share-red: #ff6b6b;
 }
 
 /* Utility classes */
@@ -55,9 +61,35 @@ html, body {
 .p-16 { padding: 16px; }
 .spacer { flex: 1 1 auto; }
 
+/* Modern Card Styles */
+.modern-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+}
+
+/* Button Styles */
+.social-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+}
+
 /* Hide elements on mobile */
 @media (max-width: 768px) {
   .hide-mobile { display: none !important; }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
 }
 
 /* Grid system */
@@ -71,11 +103,19 @@ html, body {
 .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
 
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Card styles */
 .dashboard-card {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
 }
 
 .dashboard-card:hover {
@@ -86,10 +126,26 @@ html, body {
 .card-elevated {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
+  border-radius: 12px;
 }
 
 .card-elevated:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Feed Styles */
+.feed-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.feed-post {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
 /* Animation classes */
@@ -97,8 +153,17 @@ html, body {
   animation: fadeIn 0.5s ease-in;
 }
 
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
