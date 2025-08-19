@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 // Material imports
@@ -18,33 +18,44 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
+// Components
+import { TakeExamComponent } from './exams/take-exam/take-exam.component';
+import { ViewExamComponent } from './exams/view-exam/view-exam.component';
+import { ExamAnalyticsComponent } from './analytics/exam-analytics/exam-analytics.component';
+import { AcademicSkillAnalyticsComponent } from './analytics/academic-skill-analytics/academic-skill-analytics.component';
+import { NonAcademicSkillAnalyticsComponent } from './analytics/non-academic-skill-analytics/non-academic-skill-analytics.component';
 import { StudentEventsComponent } from './events/student-events.component';
-import { StudentExamsComponent } from './exams/student-exams.component';
-import { TakeExamComponent } from './take-exam/take-exam.component';
+import { StudentBlogsComponent } from './blogs/student-blogs.component';
+import { CommunityComponent } from './community/community.component';
+import { AssignmentsComponent } from './assignments/assignments.component';
+import { ComplaintsComponent } from './complaints/complaints.component';
 import { StudentPollsComponent } from './polls/student-polls.component';
-import { CreateEventDialogComponent } from './events/create-event-dialog/create-event-dialog.component';
+import { StudentDashboardComponent } from './dashboard/student-dashboard.component';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     SharedModule,
-    CreateEventDialogComponent,
-    TakeExamComponent,
-    StudentEventsComponent,
-    StudentExamsComponent,
-    StudentPollsComponent,
-    RouterModule.forChild([
-      { path: 'events', component: StudentEventsComponent },
-      { path: 'exams', component: StudentExamsComponent },
-      { path: 'assignments', component: StudentExamsComponent },
-      { path: 'polls', component: StudentPollsComponent },
-      { path: 'take-exam/:id', component: TakeExamComponent },
-      { path: '', redirectTo: 'events', pathMatch: 'full' }
-    ]),
+    
+    // Material Modules
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -53,7 +64,49 @@ import { CreateEventDialogComponent } from './events/create-event-dialog/create-
     MatNativeDateModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatRadioModule,
     MatOptionModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatChipsModule,
+    MatSlideToggleModule,
+    
+    // Components
+    TakeExamComponent,
+    ViewExamComponent,
+    ExamAnalyticsComponent,
+    AcademicSkillAnalyticsComponent,
+    NonAcademicSkillAnalyticsComponent,
+    StudentEventsComponent,
+    StudentBlogsComponent,
+    CommunityComponent,
+    AssignmentsComponent,
+    ComplaintsComponent,
+    StudentPollsComponent,
+    StudentDashboardComponent,
+    
+    RouterModule.forChild([
+      { path: 'dashboard', component: StudentDashboardComponent },
+      { path: 'exams/take', component: TakeExamComponent },
+      { path: 'exams/take/:id', component: TakeExamComponent },
+      { path: 'exams/view', component: ViewExamComponent },
+      { path: 'analytics/exam', component: ExamAnalyticsComponent },
+      { path: 'analytics/skills/academic', component: AcademicSkillAnalyticsComponent },
+      { path: 'analytics/skills/non-academic', component: NonAcademicSkillAnalyticsComponent },
+      { path: 'events', component: StudentEventsComponent },
+      { path: 'blogs', component: StudentBlogsComponent },
+      { path: 'community', component: CommunityComponent },
+      { path: 'assignments', component: AssignmentsComponent },
+      { path: 'complaints', component: ComplaintsComponent },
+      { path: 'polls', component: StudentPollsComponent },
+      { path: '', redirectTo: 'exams/take', pathMatch: 'full' }
+    ])
   ]
 })
 export class StudentModule { }

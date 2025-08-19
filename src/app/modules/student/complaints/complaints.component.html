@@ -1,0 +1,249 @@
+<div class="complaints-container">
+  <!-- Header -->
+  <div class="complaints-header-bar">
+    <div class="header-content">
+      <h2>Student Complaints</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="complaints-content">
+    <div class="complaints-header">
+      <h1>Submit & Track Complaints</h1>
+      <p>Report issues and track their resolution progress</p>
+    </div>
+
+    <!-- New Complaint Form -->
+    <mat-card class="complaint-form-card">
+      <mat-card-header>
+        <mat-card-title>Submit New Complaint</mat-card-title>
+        <mat-card-subtitle>Describe your issue in detail for faster resolution</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()" class="complaint-form">
+          <div class="form-row">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Complaint Title</mat-label>
+              <input matInput formControlName="title" placeholder="Brief description of the issue">
+              <mat-error *ngIf="complaintForm.get('title')?.hasError('required')">
+                Title is required
+              </mat-error>
+              <mat-error *ngIf="complaintForm.get('title')?.hasError('minlength')">
+                Title must be at least 10 characters long
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="category">
+                <mat-option *ngFor="let category of complaintCategories" [value]="category">
+                  {{ category }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="complaintForm.get('category')?.hasError('required')">
+                Please select a category
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priority">
+                <mat-option *ngFor="let priority of priorities" [value]="priority">
+                  {{ priority | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="form-field full-width" appearance="outline">
+            <mat-label>Detailed Description</mat-label>
+            <textarea matInput 
+                      formControlName="description" 
+                      rows="6"
+                      placeholder="Provide detailed information about the issue, including when it occurred, what you were doing, and any error messages you received.">
+            </textarea>
+            <mat-error *ngIf="complaintForm.get('description')?.hasError('required')">
+              Description is required
+            </mat-error>
+            <mat-error *ngIf="complaintForm.get('description')?.hasError('minlength')">
+              Description must be at least 20 characters long
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button 
+                    color="primary" 
+                    type="submit"
+                    [disabled]="!complaintForm.valid">
+              <mat-icon>send</mat-icon>
+              Submit Complaint
+            </button>
+            
+            <button mat-button 
+                    type="button" 
+                    (click)="complaintForm.reset(); complaintForm.patchValue({ priority: 'medium' })">
+              <mat-icon>clear</mat-icon>
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Complaints Tabs -->
+    <mat-tab-group [(selectedIndex)]="selectedTab" class="complaints-tabs">
+      <mat-tab label="Active Complaints">
+        <div class="tab-content">
+          <div *ngIf="getFilteredComplaints().length === 0" class="empty-state">
+            <mat-icon class="empty-icon">assignment_turned_in</mat-icon>
+            <h3>No Active Complaints</h3>
+            <p>You don't have any active complaints at the moment.</p>
+          </div>
+          
+          <mat-accordion *ngIf="getFilteredComplaints().length > 0" class="complaints-accordion">
+            <mat-expansion-panel *ngFor="let complaint of getFilteredComplaints()" class="complaint-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="complaint-title-section">
+                    <span class="complaint-title">{{ complaint.title }}</span>
+                    <div class="complaint-badges">
+                      <mat-chip [style.background-color]="getCategoryColor(complaint.category)" class="category-chip">
+                        {{ complaint.category }}
+                      </mat-chip>
+                      <mat-chip [style.background-color]="getPriorityColor(complaint.priority)" class="priority-chip">
+                        {{ complaint.priority | titlecase }}
+                      </mat-chip>
+                      <mat-chip [style.background-color]="getStatusColor(complaint.status)" class="status-chip">
+                        <mat-icon>{{ getStatusIcon(complaint.status) }}</mat-icon>
+                        {{ complaint.status | titlecase }}
+                      </mat-chip>
+                    </div>
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  Submitted {{ complaint.submittedAt | date:'mediumDate' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="complaint-details">
+                <div class="complaint-description">
+                  <h4>Description:</h4>
+                  <p>{{ complaint.description }}</p>
+                </div>
+
+                <div class="complaint-meta">
+                  <div class="meta-item">
+                    <mat-icon>schedule</mat-icon>
+                    <span>Submitted: {{ complaint.submittedAt | date:'medium' }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <mat-icon>update</mat-icon>
+                    <span>Last Updated: {{ complaint.updatedAt | date:'medium' }}</span>
+                  </div>
+                  <div class="meta-item" *ngIf="complaint.assignedTo">
+                    <mat-icon>person</mat-icon>
+                    <span>Assigned to: {{ complaint.assignedTo }}</span>
+                  </div>
+                </div>
+
+                <div class="complaint-response" *ngIf="complaint.response">
+                  <h4>Response:</h4>
+                  <div class="response-content">
+                    <p>{{ complaint.response }}</p>
+                  </div>
+                </div>
+
+                <div class="complaint-actions">
+                  <button mat-button (click)="viewComplaintDetails(complaint)">
+                    <mat-icon>visibility</mat-icon>
+                    View Details
+                  </button>
+                  
+                  <button mat-button 
+                          color="warn" 
+                          (click)="withdrawComplaint(complaint)"
+                          [disabled]="complaint.status !== 'open'">
+                    <mat-icon>cancel</mat-icon>
+                    Withdraw
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Resolved Complaints">
+        <div class="tab-content">
+          <div *ngIf="getFilteredComplaints().length === 0" class="empty-state">
+            <mat-icon class="empty-icon">check_circle</mat-icon>
+            <h3>No Resolved Complaints</h3>
+            <p>Your resolved complaints will appear here.</p>
+          </div>
+          
+          <mat-accordion *ngIf="getFilteredComplaints().length > 0" class="complaints-accordion">
+            <mat-expansion-panel *ngFor="let complaint of getFilteredComplaints()" class="complaint-panel resolved-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="complaint-title-section">
+                    <span class="complaint-title">{{ complaint.title }}</span>
+                    <div class="complaint-badges">
+                      <mat-chip [style.background-color]="getCategoryColor(complaint.category)" class="category-chip">
+                        {{ complaint.category }}
+                      </mat-chip>
+                      <mat-chip [style.background-color]="getStatusColor(complaint.status)" class="status-chip">
+                        <mat-icon>{{ getStatusIcon(complaint.status) }}</mat-icon>
+                        {{ complaint.status | titlecase }}
+                      </mat-chip>
+                    </div>
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  Resolved {{ complaint.updatedAt | date:'mediumDate' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="complaint-details">
+                <div class="complaint-description">
+                  <h4>Description:</h4>
+                  <p>{{ complaint.description }}</p>
+                </div>
+
+                <div class="complaint-response" *ngIf="complaint.response">
+                  <h4>Resolution:</h4>
+                  <div class="response-content resolved-response">
+                    <p>{{ complaint.response }}</p>
+                  </div>
+                </div>
+
+                <div class="complaint-meta">
+                  <div class="meta-item">
+                    <mat-icon>schedule</mat-icon>
+                    <span>Submitted: {{ complaint.submittedAt | date:'medium' }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Resolved: {{ complaint.updatedAt | date:'medium' }}</span>
+                  </div>
+                  <div class="meta-item" *ngIf="complaint.assignedTo">
+                    <mat-icon>person</mat-icon>
+                    <span>Handled by: {{ complaint.assignedTo }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

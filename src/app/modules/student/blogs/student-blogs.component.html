@@ -1,0 +1,213 @@
+<div class="blogs-container">
+  <!-- Header -->
+  <div class="blogs-header-bar">
+    <div class="header-content">
+      <h2>Student Blogs</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="blogs-content">
+    <div class="blogs-header">
+      <h1>Educational Blogs</h1>
+      <p>Discover insights, tutorials, and experiences from the academic community</p>
+    </div>
+
+    <!-- Search and Create -->
+    <div class="blogs-controls">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search blogs...</mat-label>
+        <input matInput [(ngModel)]="searchTerm" placeholder="Search by title, tags, or author">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      
+      <button mat-raised-button color="primary" (click)="createNewBlog()" class="create-btn">
+        <mat-icon>add</mat-icon>
+        Write Blog
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <mat-tab-group [(selectedIndex)]="selectedTab" class="blogs-tabs">
+      <mat-tab label="All Blogs">
+        <div class="tab-content">
+          <div class="blogs-grid">
+            <mat-card *ngFor="let blog of getFilteredBlogs()" class="blog-card" (click)="readBlog(blog)">
+              <div class="blog-image" *ngIf="blog.imageUrl">
+                <img [src]="blog.imageUrl" [alt]="blog.title" (click)="trackLinkClick(blog)">
+              </div>
+              
+              <mat-card-header>
+                <mat-card-title>{{ blog.title }}</mat-card-title>
+                <mat-card-subtitle>
+                  By {{ blog.author }} • {{ blog.publishedAt | date:'mediumDate' }}
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content>
+                <p class="blog-summary">{{ blog.summary }}</p>
+                
+                <div class="blog-tags">
+                  <mat-chip *ngFor="let tag of blog.tags" class="tag-chip">
+                    {{ tag }}
+                  </mat-chip>
+                </div>
+
+                <div class="blog-stats">
+                  <div class="stat-item">
+                    <mat-icon>visibility</mat-icon>
+                    <span>{{ blog.readCount }} reads</span>
+                  </div>
+                  <div class="stat-item">
+                    <mat-icon>link</mat-icon>
+                    <span>{{ blog.linkClicks }} clicks</span>
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions>
+                <button mat-button color="primary" (click)="readBlog(blog); $event.stopPropagation()">
+                  <mat-icon>article</mat-icon>
+                  Read More
+                </button>
+                <button mat-icon-button (click)="toggleBookmark(blog); $event.stopPropagation()" 
+                        [color]="blog.isBookmarked ? 'accent' : ''">
+                  <mat-icon>{{ blog.isBookmarked ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+                </button>
+                <button mat-icon-button (click)="shareBlog(blog); $event.stopPropagation()">
+                  <mat-icon>share</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Bookmarked">
+        <div class="tab-content">
+          <div *ngIf="getFilteredBlogs().length === 0" class="empty-state">
+            <mat-icon class="empty-icon">bookmark_border</mat-icon>
+            <h3>No Bookmarked Blogs</h3>
+            <p>Bookmark blogs you want to read later by clicking the bookmark icon</p>
+          </div>
+          
+          <div class="blogs-grid" *ngIf="getFilteredBlogs().length > 0">
+            <mat-card *ngFor="let blog of getFilteredBlogs()" class="blog-card" (click)="readBlog(blog)">
+              <div class="blog-image" *ngIf="blog.imageUrl">
+                <img [src]="blog.imageUrl" [alt]="blog.title" (click)="trackLinkClick(blog)">
+              </div>
+              
+              <mat-card-header>
+                <mat-card-title>{{ blog.title }}</mat-card-title>
+                <mat-card-subtitle>
+                  By {{ blog.author }} • {{ blog.publishedAt | date:'mediumDate' }}
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content>
+                <p class="blog-summary">{{ blog.summary }}</p>
+                
+                <div class="blog-tags">
+                  <mat-chip *ngFor="let tag of blog.tags" class="tag-chip">
+                    {{ tag }}
+                  </mat-chip>
+                </div>
+
+                <div class="blog-stats">
+                  <div class="stat-item">
+                    <mat-icon>visibility</mat-icon>
+                    <span>{{ blog.readCount }} reads</span>
+                  </div>
+                  <div class="stat-item">
+                    <mat-icon>link</mat-icon>
+                    <span>{{ blog.linkClicks }} clicks</span>
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions>
+                <button mat-button color="primary" (click)="readBlog(blog); $event.stopPropagation()">
+                  <mat-icon>article</mat-icon>
+                  Read More
+                </button>
+                <button mat-icon-button (click)="toggleBookmark(blog); $event.stopPropagation()" color="accent">
+                  <mat-icon>bookmark</mat-icon>
+                </button>
+                <button mat-icon-button (click)="shareBlog(blog); $event.stopPropagation()">
+                  <mat-icon>share</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="My Blogs">
+        <div class="tab-content">
+          <div *ngIf="getFilteredBlogs().length === 0" class="empty-state">
+            <mat-icon class="empty-icon">article</mat-icon>
+            <h3>No Blogs Yet</h3>
+            <p>Start sharing your knowledge and experiences by writing your first blog</p>
+            <button mat-raised-button color="primary" (click)="createNewBlog()">
+              <mat-icon>add</mat-icon>
+              Write Your First Blog
+            </button>
+          </div>
+          
+          <div class="blogs-grid" *ngIf="getFilteredBlogs().length > 0">
+            <mat-card *ngFor="let blog of getFilteredBlogs()" class="blog-card my-blog-card">
+              <mat-card-header>
+                <mat-card-title>{{ blog.title }}</mat-card-title>
+                <mat-card-subtitle>
+                  Published {{ blog.publishedAt | date:'mediumDate' }}
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content>
+                <p class="blog-summary">{{ blog.summary }}</p>
+                
+                <div class="blog-tags">
+                  <mat-chip *ngFor="let tag of blog.tags" class="tag-chip">
+                    {{ tag }}
+                  </mat-chip>
+                </div>
+
+                <div class="blog-stats">
+                  <div class="stat-item">
+                    <mat-icon>visibility</mat-icon>
+                    <span>{{ blog.readCount }} reads</span>
+                  </div>
+                  <div class="stat-item">
+                    <mat-icon>link</mat-icon>
+                    <span>{{ blog.linkClicks }} clicks</span>
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions>
+                <button mat-button color="primary" (click)="readBlog(blog)">
+                  <mat-icon>visibility</mat-icon>
+                  View
+                </button>
+                <button mat-button (click)="editBlog(blog)">
+                  <mat-icon>edit</mat-icon>
+                  Edit
+                </button>
+                <button mat-button color="warn" (click)="deleteBlog(blog)">
+                  <mat-icon>delete</mat-icon>
+                  Delete
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

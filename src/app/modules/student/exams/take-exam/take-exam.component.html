@@ -1,0 +1,191 @@
+<div class="take-exam-container">
+  <!-- Header -->
+  <div class="exam-header-bar">
+    <div class="header-content">
+      <div class="exam-info">
+        <h2>{{ mockExam.title }}</h2>
+        <div class="exam-meta">
+          <mat-chip class="time-chip">
+            <mat-icon>schedule</mat-icon>
+            {{ getTimeFormatted() }}
+          </mat-chip>
+          <mat-chip class="progress-chip">
+            Question {{ currentQuestionIndex + 1 }} of {{ mockExam.questions.length }}
+          </mat-chip>
+          <mat-chip class="proctoring-chip" [class.active]="isProctoring">
+            <mat-icon>videocam</mat-icon>
+            AI Proctoring
+          </mat-chip>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Exit Exam
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <mat-progress-bar [value]="getProgress()" mode="determinate" class="exam-progress"></mat-progress-bar>
+
+  <div class="exam-content">
+    <!-- Question Navigation Sidebar -->
+    <div class="question-nav">
+      <h3>Questions</h3>
+      <div class="question-grid">
+        <button 
+          *ngFor="let question of mockExam.questions; let i = index"
+          mat-mini-fab
+          [color]="i === currentQuestionIndex ? 'primary' : (isAnswered(question.id) ? 'accent' : '')"
+          (click)="goToQuestion(i)"
+          class="question-nav-btn">
+          {{ i + 1 }}
+        </button>
+      </div>
+      <div class="nav-legend">
+        <div class="legend-item">
+          <div class="legend-color current"></div>
+          <span>Current</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color answered"></div>
+          <span>Answered</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color unanswered"></div>
+          <span>Unanswered</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Question Area -->
+    <div class="question-area">
+      <mat-card class="question-card">
+        <mat-card-header>
+          <mat-card-title>
+            Question {{ currentQuestionIndex + 1 }}
+            <mat-chip class="marks-chip">{{ getCurrentQuestion().marks }} marks</mat-chip>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <mat-chip [class]="'type-' + getCurrentQuestion().type">
+              {{ getCurrentQuestion().type | titlecase }}
+            </mat-chip>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="question-text">
+            {{ getCurrentQuestion().question }}
+          </div>
+
+          <form [formGroup]="examForm" class="answer-section">
+            <!-- MCQ Questions -->
+            <div *ngIf="getCurrentQuestion().type === 'mcq'" class="mcq-options">
+              <mat-radio-group [formControlName]="getCurrentQuestion().id">
+                <mat-radio-button 
+                  *ngFor="let option of getCurrentQuestion().options; let i = index"
+                  [value]="option"
+                  class="mcq-option">
+                  {{ option }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!-- Text Questions -->
+            <div *ngIf="getCurrentQuestion().type === 'text'" class="text-answer">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Your Answer</mat-label>
+                <textarea 
+                  matInput 
+                  [formControlName]="getCurrentQuestion().id"
+                  rows="8"
+                  placeholder="Type your answer here...">
+                </textarea>
+              </mat-form-field>
+            </div>
+
+            <!-- Programming Questions -->
+            <div *ngIf="getCurrentQuestion().type === 'programming'" class="programming-answer">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Code Solution</mat-label>
+                <textarea 
+                  matInput 
+                  [formControlName]="getCurrentQuestion().id"
+                  rows="12"
+                  placeholder="Write your code here..."
+                  class="code-editor">
+                </textarea>
+              </mat-form-field>
+              <div class="programming-tools">
+                <button mat-button color="primary">
+                  <mat-icon>play_arrow</mat-icon>
+                  Run Code
+                </button>
+                <button mat-button>
+                  <mat-icon>bug_report</mat-icon>
+                  Debug
+                </button>
+              </div>
+            </div>
+
+            <!-- Voice/Video Questions (Future) -->
+            <div *ngIf="getCurrentQuestion().type === 'voice' || getCurrentQuestion().type === 'video'" class="media-answer">
+              <div class="media-placeholder">
+                <mat-icon>{{ getCurrentQuestion().type === 'voice' ? 'mic' : 'videocam' }}</mat-icon>
+                <p>{{ getCurrentQuestion().type | titlecase }} recording feature coming soon</p>
+                <button mat-raised-button color="primary" disabled>
+                  <mat-icon>{{ getCurrentQuestion().type === 'voice' ? 'mic' : 'videocam' }}</mat-icon>
+                  Start Recording
+                </button>
+              </div>
+            </div>
+
+            <!-- Panel Questions (Future) -->
+            <div *ngIf="getCurrentQuestion().type === 'panel'" class="panel-answer">
+              <div class="panel-placeholder">
+                <mat-icon>groups</mat-icon>
+                <p>Panel interview feature coming soon</p>
+                <button mat-raised-button color="primary" disabled>
+                  <mat-icon>video_call</mat-icon>
+                  Join Panel
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+
+        <mat-card-actions class="question-actions">
+          <button 
+            mat-button 
+            (click)="previousQuestion()"
+            [disabled]="currentQuestionIndex === 0">
+            <mat-icon>chevron_left</mat-icon>
+            Previous
+          </button>
+          
+          <div class="action-spacer"></div>
+          
+          <button 
+            mat-button 
+            (click)="nextQuestion()"
+            [disabled]="currentQuestionIndex === mockExam.questions.length - 1">
+            Next
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+          
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="submitExam()"
+            class="submit-btn">
+            <mat-icon>send</mat-icon>
+            Submit Exam
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

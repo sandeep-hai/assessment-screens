@@ -1,0 +1,161 @@
+<div class="analytics-container">
+  <!-- Header -->
+  <div class="analytics-header-bar">
+    <div class="header-content">
+      <h2>Academic Skills Analytics</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="analytics-content">
+    <div class="analytics-header">
+      <h1>Academic Skills Performance</h1>
+      <p>Track your proficiency across courses, subjects, and topics</p>
+    </div>
+
+    <!-- Filters -->
+    <mat-card class="filters-card">
+      <mat-card-content>
+        <div class="filters-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Time Period</mat-label>
+            <mat-select [(value)]="selectedTimeframe">
+              <mat-option value="day">Daily</mat-option>
+              <mat-option value="week">Weekly</mat-option>
+              <mat-option value="month">Monthly</mat-option>
+              <mat-option value="year">Yearly</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Course</mat-label>
+            <mat-select [(value)]="selectedCourse">
+              <mat-option value="all">All Courses</mat-option>
+              <mat-option value="cs">Computer Science</mat-option>
+              <mat-option value="math">Mathematics</mat-option>
+              <mat-option value="physics">Physics</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Course Hierarchy -->
+    <div *ngFor="let course of courseData" class="course-section">
+      <mat-card class="course-card">
+        <mat-card-header>
+          <mat-card-title>{{ course.name }}</mat-card-title>
+          <mat-card-subtitle>Course Performance Overview</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Subjects -->
+          <div *ngFor="let subject of course.subjects" class="subject-section">
+            <div class="subject-header">
+              <h3>{{ subject.name }}</h3>
+              <mat-chip class="subject-chip">Subject</mat-chip>
+            </div>
+
+            <!-- Topics -->
+            <div class="topics-grid">
+              <div *ngFor="let topic of subject.topics" class="topic-card">
+                <div class="topic-header">
+                  <h4>{{ topic.name }}</h4>
+                  <div class="topic-stats">
+                    <div class="proficiency-score" [style.color]="getProficiencyColor(topic.proficiency)">
+                      {{ topic.proficiency }}%
+                    </div>
+                    <div class="trend" [style.color]="getTrendColor(topic.trend)">
+                      <mat-icon>{{ topic.trend.startsWith('+') ? 'trending_up' : 'trending_down' }}</mat-icon>
+                      {{ topic.trend }}
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="proficiency-bar">
+                  <div class="proficiency-fill" 
+                       [style.width.%]="topic.proficiency"
+                       [style.background-color]="getProficiencyColor(topic.proficiency)">
+                  </div>
+                </div>
+                
+                <div class="proficiency-label">
+                  <span [style.color]="getProficiencyColor(topic.proficiency)">
+                    {{ topic.proficiency >= 80 ? 'Excellent' : topic.proficiency >= 60 ? 'Good' : 'Needs Improvement' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Trend Analysis -->
+    <mat-card class="trend-card">
+      <mat-card-header>
+        <mat-card-title>{{ timeframeTrends[selectedTimeframe as keyof typeof timeframeTrends].label }}</mat-card-title>
+        <mat-card-subtitle>Performance trends over time</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="trend-chart">
+          <div class="chart-placeholder">
+            <mat-icon>show_chart</mat-icon>
+            <h3>Interactive Trend Charts</h3>
+            <p>Detailed performance progression charts will be displayed here</p>
+            <div class="sample-data">
+              <h4>Sample {{ selectedTimeframe }} data:</h4>
+              <div class="data-points">
+                <span *ngFor="let point of timeframeTrends[selectedTimeframe as keyof typeof timeframeTrends].data" 
+                      class="data-point">{{ point }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Recommendations -->
+    <mat-card class="recommendations-card">
+      <mat-card-header>
+        <mat-card-title>Improvement Recommendations</mat-card-title>
+        <mat-card-subtitle>Personalized suggestions based on your performance</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="recommendations-list">
+          <div class="recommendation-item">
+            <mat-icon class="rec-icon">lightbulb</mat-icon>
+            <div class="rec-content">
+              <h4>Focus on Graph Algorithms</h4>
+              <p>Your proficiency in Graph Algorithms is 65%. Consider spending more time on BFS and DFS concepts.</p>
+            </div>
+            <mat-chip class="priority-high">High Priority</mat-chip>
+          </div>
+          
+          <div class="recommendation-item">
+            <mat-icon class="rec-icon">trending_up</mat-icon>
+            <div class="rec-content">
+              <h4>Great Progress in Trees</h4>
+              <p>You've improved 8% in Trees this month. Keep practicing binary tree traversals to maintain momentum.</p>
+            </div>
+            <mat-chip class="priority-medium">Medium Priority</mat-chip>
+          </div>
+          
+          <div class="recommendation-item">
+            <mat-icon class="rec-icon">star</mat-icon>
+            <div class="rec-content">
+              <h4>Excellent Sorting Skills</h4>
+              <p>Your sorting algorithm proficiency is excellent at 90%. Consider helping peers or exploring advanced sorting techniques.</p>
+            </div>
+            <mat-chip class="priority-low">Low Priority</mat-chip>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

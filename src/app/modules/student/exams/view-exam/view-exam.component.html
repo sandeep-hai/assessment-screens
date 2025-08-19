@@ -1,0 +1,186 @@
+<div class="view-exam-container">
+  <!-- Header -->
+  <div class="exam-header-bar">
+    <div class="header-content">
+      <h2>Exam Results</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-content">
+    <!-- Exam Results List -->
+    <div *ngIf="!selectedExam" class="results-list">
+      <div class="results-header">
+        <h1>Your Exam Results</h1>
+        <p>View your performance and detailed analysis</p>
+      </div>
+
+      <div class="results-grid">
+        <mat-card *ngFor="let exam of examResults" class="result-card" (click)="viewExamDetails(exam)">
+          <mat-card-header>
+            <mat-card-title>{{ exam.examTitle }}</mat-card-title>
+            <mat-card-subtitle>{{ exam.subject }} • {{ exam.date | date:'mediumDate' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="score-section">
+              <div class="score-circle">
+                <div class="percentage">{{ exam.percentage }}%</div>
+                <div class="grade" [style.color]="getGradeColor(exam.grade)">{{ exam.grade }}</div>
+              </div>
+              <div class="score-details">
+                <div class="score-item">
+                  <span class="label">Marks:</span>
+                  <span class="value">{{ exam.obtainedMarks }}/{{ exam.totalMarks }}</span>
+                </div>
+                <div class="score-item">
+                  <span class="label">Status:</span>
+                  <mat-chip [style.background-color]="getStatusColor(exam.status)" class="status-chip">
+                    {{ exam.status | titlecase }}
+                  </mat-chip>
+                </div>
+              </div>
+            </div>
+
+            <mat-progress-bar 
+              [value]="exam.percentage" 
+              mode="determinate"
+              class="progress-bar">
+            </mat-progress-bar>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button color="primary">
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </button>
+            <button mat-button (click)="retakeExam(exam.id); $event.stopPropagation()">
+              <mat-icon>refresh</mat-icon>
+              Retake
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Detailed Exam View -->
+    <div *ngIf="selectedExam" class="exam-details">
+      <div class="details-header">
+        <button mat-icon-button (click)="goBack()" class="back-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="exam-title-section">
+          <h1>{{ selectedExam.examTitle }}</h1>
+          <p>{{ selectedExam.subject }} • {{ selectedExam.date | date:'mediumDate' }}</p>
+        </div>
+      </div>
+
+      <div class="details-content">
+        <!-- Performance Summary -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Performance Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="summary-stats">
+              <div class="stat-item">
+                <div class="stat-value">{{ selectedExam.percentage }}%</div>
+                <div class="stat-label">Overall Score</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" [style.color]="getGradeColor(selectedExam.grade)">{{ selectedExam.grade }}</div>
+                <div class="stat-label">Grade</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">{{ selectedExam.obtainedMarks }}/{{ selectedExam.totalMarks }}</div>
+                <div class="stat-label">Marks</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">{{ selectedExam.questions.filter(q => q.isCorrect).length }}/{{ selectedExam.questions.length }}</div>
+                <div class="stat-label">Correct Answers</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Question-wise Analysis -->
+        <mat-card class="analysis-card">
+          <mat-card-header>
+            <mat-card-title>Question-wise Analysis</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <table mat-table [dataSource]="selectedExam.questions" class="questions-table">
+              <ng-container matColumnDef="question">
+                <th mat-header-cell *matHeaderCellDef>Question</th>
+                <td mat-cell *matCellDef="let question">
+                  <div class="question-cell">
+                    <div class="question-text">{{ question.question }}</div>
+                    <mat-chip class="type-chip">{{ question.type }}</mat-chip>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="marks">
+                <th mat-header-cell *matHeaderCellDef>Marks</th>
+                <td mat-cell *matCellDef="let question">{{ question.marks }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="obtained">
+                <th mat-header-cell *matHeaderCellDef>Obtained</th>
+                <td mat-cell *matCellDef="let question">{{ question.obtainedMarks }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let question">
+                  <mat-chip [class]="question.isCorrect ? 'correct-chip' : 'incorrect-chip'">
+                    <mat-icon>{{ question.isCorrect ? 'check_circle' : 'cancel' }}</mat-icon>
+                    {{ question.isCorrect ? 'Correct' : 'Incorrect' }}
+                  </mat-chip>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="question-row"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Answer Review -->
+        <mat-card class="review-card">
+          <mat-card-header>
+            <mat-card-title>Answer Review</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngFor="let question of selectedExam.questions" class="answer-review-item">
+              <div class="review-header">
+                <h4>{{ question.question }}</h4>
+                <mat-chip [class]="question.isCorrect ? 'correct-chip' : 'incorrect-chip'">
+                  {{ question.obtainedMarks }}/{{ question.marks }} marks
+                </mat-chip>
+              </div>
+              
+              <div class="answer-comparison">
+                <div class="user-answer">
+                  <h5>Your Answer:</h5>
+                  <p>{{ question.userAnswer }}</p>
+                </div>
+                
+                <div class="correct-answer" *ngIf="!question.isCorrect">
+                  <h5>Correct Answer:</h5>
+                  <p>{{ question.correctAnswer }}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

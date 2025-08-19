@@ -1,0 +1,218 @@
+<div class="analytics-container">
+  <!-- Header -->
+  <div class="analytics-header-bar">
+    <div class="header-content">
+      <h2>Non-Academic Skills Analytics</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="analytics-content">
+    <div class="analytics-header">
+      <h1>Non-Academic Skills Assessment</h1>
+      <p>Track your conceptual skills, technical expertise, and financial literacy</p>
+    </div>
+
+    <mat-tab-group class="skills-tabs">
+      <!-- Conceptual Skills Tab -->
+      <mat-tab label="Conceptual Skills">
+        <div class="tab-content">
+          <div class="skills-header">
+            <h2>Conceptual & Soft Skills</h2>
+            <p>Essential skills for professional success</p>
+          </div>
+
+          <div class="skills-grid">
+            <mat-card *ngFor="let skill of conceptualSkills" class="skill-card">
+              <mat-card-content>
+                <div class="skill-header">
+                  <div class="skill-info">
+                    <h4>{{ skill.name }}</h4>
+                    <mat-chip [style.background-color]="getCategoryColor(skill.category)" class="category-chip">
+                      {{ skill.category }}
+                    </mat-chip>
+                  </div>
+                  <div class="skill-level" [style.color]="getSkillColor(skill.level)">
+                    {{ skill.level }}%
+                  </div>
+                </div>
+                
+                <div class="skill-progress">
+                  <mat-progress-bar 
+                    [value]="skill.level" 
+                    mode="determinate"
+                    [color]="skill.level >= 80 ? 'primary' : skill.level >= 60 ? 'accent' : 'warn'">
+                  </mat-progress-bar>
+                </div>
+                
+                <div class="skill-assessment">
+                  <span [style.color]="getSkillColor(skill.level)">
+                    {{ skill.level >= 80 ? 'Advanced' : skill.level >= 60 ? 'Intermediate' : 'Beginner' }}
+                  </span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tech Stack Tab -->
+      <mat-tab label="Tech Stack">
+        <div class="tab-content">
+          <div class="skills-header">
+            <h2>Technical Skills & Experience</h2>
+            <p>Your technology proficiency and hands-on experience</p>
+          </div>
+
+          <div class="tech-categories">
+            <div *ngFor="let category of ['Frontend', 'Backend', 'Database', 'Tools']" class="category-section">
+              <h3 [style.color]="getCategoryColor(category)">{{ category }}</h3>
+              <div class="tech-items">
+                <mat-card *ngFor="let tech of techStack | slice:0:6; let i = index" 
+                         class="tech-card"
+                         [class.hidden]="tech.category !== category">
+                  <mat-card-content *ngIf="tech.category === category">
+                    <div class="tech-header">
+                      <div class="tech-info">
+                        <h4>{{ tech.name }}</h4>
+                        <p class="experience">{{ tech.experience }} experience</p>
+                      </div>
+                      <div class="proficiency-score" [style.color]="getSkillColor(tech.proficiency)">
+                        {{ tech.proficiency }}%
+                      </div>
+                    </div>
+                    
+                    <div class="proficiency-bar">
+                      <div class="proficiency-fill" 
+                           [style.width.%]="tech.proficiency"
+                           [style.background-color]="getSkillColor(tech.proficiency)">
+                      </div>
+                    </div>
+                    
+                    <div class="proficiency-level">
+                      <mat-chip [style.background-color]="getSkillColor(tech.proficiency)" class="level-chip">
+                        {{ tech.proficiency >= 80 ? 'Expert' : tech.proficiency >= 60 ? 'Proficient' : 'Learning' }}
+                      </mat-chip>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- CIBIL Score Tab -->
+      <mat-tab label="CIBIL Score">
+        <div class="tab-content">
+          <div class="skills-header">
+            <h2>Credit Score & Financial Health</h2>
+            <p>Your creditworthiness and financial responsibility assessment</p>
+          </div>
+
+          <!-- CIBIL Score Overview -->
+          <mat-card class="cibil-overview-card">
+            <mat-card-content>
+              <div class="cibil-header">
+                <div class="score-circle">
+                  <div class="score-value" [style.color]="getCibilRatingColor(cibilScore.rating)">
+                    {{ cibilScore.score }}
+                  </div>
+                  <div class="score-rating" [style.color]="getCibilRatingColor(cibilScore.rating)">
+                    {{ cibilScore.rating }}
+                  </div>
+                </div>
+                <div class="score-info">
+                  <h3>CIBIL Score</h3>
+                  <p>Your credit score indicates {{ cibilScore.rating.toLowerCase() }} creditworthiness</p>
+                  <div class="score-range">
+                    <div class="range-bar">
+                      <div class="range-sections">
+                        <div class="range-section poor"></div>
+                        <div class="range-section fair"></div>
+                        <div class="range-section good"></div>
+                        <div class="range-section very-good"></div>
+                        <div class="range-section excellent"></div>
+                      </div>
+                      <div class="score-indicator" [style.left.%]="(cibilScore.score - 300) / 6"></div>
+                    </div>
+                    <div class="range-labels">
+                      <span>300</span>
+                      <span>900</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Credit Factors -->
+          <mat-card class="factors-card">
+            <mat-card-header>
+              <mat-card-title>Credit Score Factors</mat-card-title>
+              <mat-card-subtitle>Factors affecting your credit score</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="factors-list">
+                <div *ngFor="let factor of cibilScore.factors" class="factor-item">
+                  <div class="factor-info">
+                    <h4>{{ factor.name }}</h4>
+                    <div class="factor-weight">{{ factor.weight }}% of score</div>
+                  </div>
+                  <div class="factor-impact">
+                    <mat-chip [style.background-color]="getImpactColor(factor.impact)" class="impact-chip">
+                      <mat-icon>{{ factor.impact === 'Positive' ? 'trending_up' : factor.impact === 'Negative' ? 'trending_down' : 'trending_flat' }}</mat-icon>
+                      {{ factor.impact }}
+                    </mat-chip>
+                  </div>
+                  <div class="factor-bar">
+                    <div class="factor-fill" [style.width.%]="factor.weight"></div>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Improvement Tips -->
+          <mat-card class="tips-card">
+            <mat-card-header>
+              <mat-card-title>Improvement Tips</mat-card-title>
+              <mat-card-subtitle>Ways to enhance your credit score</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="tips-list">
+                <div class="tip-item">
+                  <mat-icon class="tip-icon">payment</mat-icon>
+                  <div class="tip-content">
+                    <h4>Pay Bills on Time</h4>
+                    <p>Maintain a consistent payment history to improve your score</p>
+                  </div>
+                </div>
+                <div class="tip-item">
+                  <mat-icon class="tip-icon">credit_card</mat-icon>
+                  <div class="tip-content">
+                    <h4>Keep Credit Utilization Low</h4>
+                    <p>Use less than 30% of your available credit limit</p>
+                  </div>
+                </div>
+                <div class="tip-item">
+                  <mat-icon class="tip-icon">history</mat-icon>
+                  <div class="tip-content">
+                    <h4>Build Credit History</h4>
+                    <p>Keep older accounts open to show longer credit history</p>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

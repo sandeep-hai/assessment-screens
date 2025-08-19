@@ -1,0 +1,82 @@
+<div class="community-container">
+  <!-- Header -->
+  <div class="community-header-bar">
+    <div class="header-content">
+      <h2>Student Community</h2>
+      <div class="header-actions">
+        <span class="welcome-user">{{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="community-content">
+    <div class="coming-soon">
+      <mat-icon class="coming-soon-icon">groups</mat-icon>
+      <h1>Community Features Coming Soon</h1>
+      <p>We're building an amazing community platform where students can:</p>
+      
+      <div class="features-grid">
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>forum</mat-icon>
+            <h3>Discussion Forums</h3>
+            <p>Engage in academic discussions and share knowledge with peers</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>group</mat-icon>
+            <h3>Study Groups</h3>
+            <p>Form and join study groups for collaborative learning</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>help</mat-icon>
+            <h3>Peer Help</h3>
+            <p>Ask questions and get help from fellow students</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>share</mat-icon>
+            <h3>Resource Sharing</h3>
+            <p>Share notes, resources, and study materials</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>event</mat-icon>
+            <h3>Community Events</h3>
+            <p>Participate in virtual meetups and academic events</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <mat-icon>leaderboard</mat-icon>
+            <h3>Leaderboards</h3>
+            <p>Track your progress and compete with peers</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="notify-section">
+        <h3>Stay Updated</h3>
+        <p>Be the first to know when community features are available!</p>
+        <button mat-raised-button color="primary" class="notify-btn">
+          <mat-icon>notifications</mat-icon>
+          Notify Me When Ready
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
