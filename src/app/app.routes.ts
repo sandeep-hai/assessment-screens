@@ -20,17 +20,8 @@ export const routes: Routes = [
     component: OtpVerificationComponent
   },
   {
-    path: 'student/dashboard',
-    component: StudentDashboardComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { expectedRoles: [UserRole.STUDENT] }
-  },
-  {
     path: 'student',
-    children: [
-      { path: 'dashboard', component: StudentDashboardComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-    ],
+    loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule),
     canActivate: [AuthGuard, RoleGuard],
     data: { expectedRoles: [UserRole.STUDENT] }
   },
