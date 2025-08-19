@@ -153,4 +153,8 @@ export class ViewExamComponent implements OnInit {
   goBack(): void {
     this.selectedExam = null;
   }
+
+  getCorrectAnswersCount(): number {
+    return this.selectedExam ? this.selectedExam.questions.filter(q => q.isCorrect).length : 0;
+  }
 }

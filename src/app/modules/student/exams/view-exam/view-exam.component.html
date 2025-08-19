@@ -102,7 +102,7 @@
                 <div class="stat-label">Marks</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value">{{ selectedExam.questions.filter(q => q.isCorrect).length }}/{{ selectedExam.questions.length }}</div>
+                <div class="stat-value">{{ getCorrectAnswersCount() }}/{{ selectedExam.questions.length }}</div>
                 <div class="stat-label">Correct Answers</div>
               </div>
             </div>
