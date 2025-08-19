@@ -53,11 +53,6 @@ export class StudentEventsComponent implements OnInit {
     alert('Create post feature coming soon!');
   }
 
-  openCreatePostDialog(): void {
-    console.log('Opening create post dialog...');
-    alert('Create post feature coming soon!');
-  }
-
   openCreateEventDialog(): void {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '600px',
