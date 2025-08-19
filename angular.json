@@ -45,8 +45,7 @@
             "development": {
               "buildTarget": "demo:build:development",
               "host": "0.0.0.0",
-              "port": 4200,
-              "disableHostCheck": true
+              "port": 4200
             },
             "production": {
               "buildTarget": "demo:build:production"
