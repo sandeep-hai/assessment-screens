@@ -130,6 +130,8 @@ export interface Event {
   attendees: string[];
   maxAttendees?: number;
   isActive: boolean;
+  likes?: number;
+  comments?: number;
 }
 
 export enum EventType {
@@ -151,6 +153,8 @@ export interface Poll {
   createdBy: string;
   createdAt: Date;
   expiresAt?: Date;
+  likes?: number;
+  comments?: number;
 }
 
 export interface Blog {

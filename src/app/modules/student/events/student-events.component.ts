@@ -11,6 +11,7 @@ import { MockDataService } from '../../../core/services/mock-data.service';
 import { Event, Poll } from '../../../core/models/user.model';
 import { CreateEventDialogComponent } from './create-event-dialog/create-event-dialog.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { NavigationComponent } from '../../../shared/components/navigation/navigation.component';
 
 @Component({
   selector: 'app-student-events',
@@ -21,7 +22,8 @@ import { AuthService } from '../../../core/services/auth.service';
     MatCardModule,
     MatButtonModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    NavigationComponent
   ],
   templateUrl: './student-events.component.html',
   styleUrls: ['./student-events.component.css']
