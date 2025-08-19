@@ -46,6 +46,7 @@ interface Assignment {
 export class AssignmentsComponent implements OnInit {
   selectedTab = 0;
   selectedFiles: File[] = [];
+  Math = Math;
 
   assignments: Assignment[] = [
     {
