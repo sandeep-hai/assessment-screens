@@ -33,6 +33,14 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   selectedUserEmail = '';
 
+  // Demo users with their OTPs
+  private demoUsers = {
+    'student1@humera.ai': { otp: '111111', role: UserRole.STUDENT },
+    'lecturer1@humera.ai': { otp: '222222', role: UserRole.LECTURER },
+    'collegeadmin@humera.ai': { otp: '333333', role: UserRole.COLLEGE_ADMIN },
+    'appadmin@humera.ai': { otp: '444444', role: UserRole.APP_ADMIN }
+  };
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -44,68 +52,110 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Login page is now the homepage - no auto-redirect
+    // Login page is the homepage - no auto-redirect
+    console.log('Login component initialized');
   }
 
   selectUser(email: string): void {
+    console.log('Selecting user:', email);
     this.selectedUserEmail = email;
     this.loginForm.patchValue({ email });
     
-    // Add visual feedback
-    const userCards = document.querySelectorAll('.user-card');
-    userCards.forEach(card => card.classList.remove('selected'));
-    
-    // Find and highlight the selected card
-    const selectedCard = Array.from(userCards).find(card => 
-      card.textContent?.includes(email)
-    );
-    if (selectedCard) {
-      selectedCard.classList.add('selected');
+    // Auto-login for demo purposes
+    this.quickLogin(email);
+  }
+
+  private quickLogin(email: string): void {
+    const demoUser = this.demoUsers[email as keyof typeof this.demoUsers];
+    if (!demoUser) {
+      console.error('Demo user not found:', email);
+      return;
     }
+
+    this.isLoading = true;
+    console.log('Starting quick login for:', email);
+
+    // Simulate sending OTP
+    this.authService.sendOTP(email).subscribe({
+      next: (success) => {
+        if (success) {
+          console.log('OTP sent, now verifying automatically...');
+          // Auto-verify with the correct OTP
+          this.authService.verifyOTP(email, demoUser.otp).subscribe({
+            next: (response) => {
+              this.isLoading = false;
+              console.log('Auto-login successful for:', response.user.role);
+              this.redirectBasedOnRole(response.user.role);
+            },
+            error: (error) => {
+              this.isLoading = false;
+              console.error('Auto-verification failed:', error);
+              // Fallback to manual OTP entry
+              this.router.navigate(['/auth/verify-otp'], { queryParams: { email } });
+            }
+          });
+        } else {
+          this.isLoading = false;
+          console.error('Failed to send OTP for:', email);
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error in quick login:', error);
+      }
+    });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
       const email = this.loginForm.get('email')?.value;
+      console.log('Manual login attempt for:', email);
 
       this.authService.sendOTP(email).subscribe({
         next: (success) => {
           this.isLoading = false;
           if (success) {
-            console.log('OTP sent successfully!');
+            console.log('OTP sent successfully for manual login');
             this.router.navigate(['/auth/verify-otp'], { queryParams: { email } });
           } else {
-            console.log('User not found!');
+            console.log('User not found:', email);
+            alert('User not found! Please use one of the demo emails.');
           }
         },
         error: (error) => {
           this.isLoading = false;
-          console.log('Error sending OTP');
+          console.error('Error sending OTP:', error);
+          alert('Error sending OTP. Please try again.');
         }
+      });
+    } else {
+      console.log('Form is invalid');
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.loginForm.controls).forEach(key => {
+        this.loginForm.get(key)?.markAsTouched();
       });
     }
   }
 
-  private redirectBasedOnRole(): void {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      switch (user.role) {
-        case UserRole.STUDENT:
-          this.router.navigate(['/student']);
-          break;
-        case UserRole.LECTURER:
-          this.router.navigate(['/lecturer']);
-          break;
-        case UserRole.COLLEGE_ADMIN:
-          this.router.navigate(['/college-admin']);
-          break;
-        case UserRole.APP_ADMIN:
-          this.router.navigate(['/app-admin']);
-          break;
-        default:
-          this.router.navigate(['/']);
-      }
+  private redirectBasedOnRole(role: UserRole): void {
+    console.log('Redirecting based on role:', role);
+    switch (role) {
+      case UserRole.STUDENT:
+        this.router.navigate(['/student/dashboard']);
+        break;
+      case UserRole.LECTURER:
+        this.router.navigate(['/lecturer/dashboard']);
+        break;
+      case UserRole.COLLEGE_ADMIN:
+        this.router.navigate(['/college-admin/dashboard']);
+        break;
+      case UserRole.APP_ADMIN:
+        this.router.navigate(['/app-admin/dashboard']);
+        break;
+      default:
+        console.error('Unknown role:', role);
+        this.router.navigate(['/']);
     }
   }
 }

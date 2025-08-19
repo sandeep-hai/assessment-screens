@@ -1,23 +1,38 @@
 <div class="dashboard-container fade-in">
+  <!-- Header with logout -->
+  <div class="dashboard-header-bar">
+    <div class="header-content">
+      <h2>Assessment Tool</h2>
+      <div class="header-actions">
+        <span class="welcome-user">Welcome, {{ getCurrentUserName() }}</span>
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Switch User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
   <div class="dashboard-header">
     <h1>App Admin Dashboard</h1>
     <p class="welcome-text">Oversee system operations and platform management.</p>
   </div>
 
   <div class="stats-grid grid-container grid-cols-4">
-    <mat-card class="stat-card dashboard-card">
+    <mat-card class="stat-card dashboard-card" (click)="navigateToColleges()">
       <mat-icon class="stat-icon">business</mat-icon>
       <h3>{{ dashboardStats.totalColleges }}</h3>
       <p>Total Colleges</p>
     </mat-card>
 
-    <mat-card class="stat-card dashboard-card">
+    <mat-card class="stat-card dashboard-card" (click)="navigateToSubscriptions()">
       <mat-icon class="stat-icon">subscriptions</mat-icon>
       <h3>{{ dashboardStats.totalSubscriptions }}</h3>
       <p>Active Subscriptions</p>
     </mat-card>
 
-    <mat-card class="stat-card dashboard-card">
+    <mat-card class="stat-card dashboard-card" (click)="navigateToAIModels()">
       <mat-icon class="stat-icon">smart_toy</mat-icon>
       <h3>{{ dashboardStats.activeAIModels }}</h3>
       <p>AI Models</p>
@@ -33,53 +48,54 @@
   <div class="system-actions">
     <h2>System Management</h2>
     <div class="actions-grid grid-container grid-cols-4">
-      <mat-card class="action-card" routerLink="/app-admin/subscriptions">
+      <mat-card class="action-card" (click)="navigateToSubscriptions()">
         <mat-icon>subscriptions</mat-icon>
         <h3>Subscriptions</h3>
         <p>Manage college subscriptions and billing</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/subjects">
+      <mat-card class="action-card" (click)="navigateToGlobalSubjects()">
         <mat-icon>book</mat-icon>
         <h3>Global Subjects</h3>
         <p>Manage subjects and syllabus</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/ai-models">
+      <mat-card class="action-card" (click)="navigateToAIModels()">
         <mat-icon>psychology</mat-icon>
         <h3>AI Models</h3>
         <p>Train and manage AI systems</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/statistics">
+      <mat-card class="action-card" (click)="navigateToAnalytics()">
         <mat-icon>analytics</mat-icon>
         <h3>Analytics</h3>
         <p>Platform usage and performance</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/content">
+      <mat-card class="action-card" (click)="navigateToContentLibrary()">
         <mat-icon>library_books</mat-icon>
         <h3>Content Library</h3>
         <p>Question papers and resources</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/colleges">
+      <mat-card class="action-card" (click)="navigateToColleges()">
         <mat-icon>school</mat-icon>
         <h3>Manage Colleges</h3>
         <p>Oversee institutional accounts</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/system">
+      <mat-card class="action-card" (click)="navigateToSystemConfig()">
         <mat-icon>settings</mat-icon>
         <h3>System Config</h3>
         <p>Platform settings and maintenance</p>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/app-admin/support">
+      <mat-card class="action-card" (click)="navigateToSupport()">
         <mat-icon>support</mat-icon>
         <h3>Support Center</h3>
         <p>User support and helpdesk</p>
       </mat-card>
     </div>
+  </div>
   </div>
 </div>

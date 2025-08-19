@@ -33,56 +33,87 @@
     </mat-card-actions>
     
     <div class="demo-credentials">
-      <h4>Demo Credentials:</h4>
+      <h4>Demo Users - Click to Login:</h4>
+      
       <div class="user-cards">
-        <div class="user-card" (click)="selectUser('student1@humera.ai')">
+        <div class="user-card" 
+             [class.selected]="selectedUserEmail === 'student1@humera.ai'"
+             (click)="selectUser('student1@humera.ai')">
           <div class="user-avatar student-avatar">
             <mat-icon>school</mat-icon>
           </div>
           <div class="user-info">
             <h5>John Doe</h5>
-            <p>Student</p>
-            <small>student1@humera.ai</small>
+            <p class="role-text">Student</p>
+            <small class="email-text">student1@humera.ai</small>
+          </div>
+          <div class="click-indicator">
+            <mat-icon>arrow_forward</mat-icon>
           </div>
         </div>
         
-        <div class="user-card" (click)="selectUser('lecturer1@humera.ai')">
+        <div class="user-card" 
+             [class.selected]="selectedUserEmail === 'lecturer1@humera.ai'"
+             (click)="selectUser('lecturer1@humera.ai')">
           <div class="user-avatar lecturer-avatar">
             <mat-icon>person</mat-icon>
           </div>
           <div class="user-info">
             <h5>Jane Smith</h5>
-            <p>Lecturer</p>
-            <small>lecturer1@humera.ai</small>
+            <p class="role-text">Lecturer</p>
+            <small class="email-text">lecturer1@humera.ai</small>
+          </div>
+          <div class="click-indicator">
+            <mat-icon>arrow_forward</mat-icon>
           </div>
         </div>
         
-        <div class="user-card" (click)="selectUser('collegeadmin@humera.ai')">
+        <div class="user-card" 
+             [class.selected]="selectedUserEmail === 'collegeadmin@humera.ai'"
+             (click)="selectUser('collegeadmin@humera.ai')">
           <div class="user-avatar admin-avatar">
             <mat-icon>business</mat-icon>
           </div>
           <div class="user-info">
             <h5>Robert Johnson</h5>
-            <p>College Admin</p>
-            <small>collegeadmin@humera.ai</small>
+            <p class="role-text">College Admin</p>
+            <small class="email-text">collegeadmin@humera.ai</small>
+          </div>
+          <div class="click-indicator">
+            <mat-icon>arrow_forward</mat-icon>
           </div>
         </div>
         
-        <div class="user-card" (click)="selectUser('appadmin@humera.ai')">
+        <div class="user-card" 
+             [class.selected]="selectedUserEmail === 'appadmin@humera.ai'"
+             (click)="selectUser('appadmin@humera.ai')">
           <div class="user-avatar app-admin-avatar">
             <mat-icon>admin_panel_settings</mat-icon>
           </div>
           <div class="user-info">
             <h5>Alice Wilson</h5>
-            <p>App Admin</p>
-            <small>appadmin@humera.ai</small>
+            <p class="role-text">App Admin</p>
+            <small class="email-text">appadmin@humera.ai</small>
+          </div>
+          <div class="click-indicator">
+            <mat-icon>arrow_forward</mat-icon>
           </div>
         </div>
       </div>
       
       <div class="login-instructions">
-        <p><strong>Quick Login:</strong> Click on any user card above to auto-fill their email, then click "Send OTP"</p>
-        <p><strong>Manual Login:</strong> Enter any email above and use OTP: 111111 for Student, 222222 for Lecturer, 333333 for College Admin, 444444 for App Admin</p>
+        <div class="instruction-item">
+          <mat-icon class="instruction-icon">touch_app</mat-icon>
+          <div>
+            <strong>Quick Login:</strong> Click any user card above to auto-select and login
+          </div>
+        </div>
+        <div class="instruction-item">
+          <mat-icon class="instruction-icon">vpn_key</mat-icon>
+          <div>
+            <strong>Manual Login:</strong> Enter email manually. OTPs: Student(111111), Lecturer(222222), College Admin(333333), App Admin(444444)
+          </div>
+        </div>
       </div>
     </div>
   </mat-card>
